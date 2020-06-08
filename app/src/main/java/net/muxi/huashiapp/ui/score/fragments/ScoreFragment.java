@@ -167,6 +167,9 @@ public class ScoreFragment extends BaseAppFragment implements  View.OnClickListe
 
             endYearValue = ScoreCreditUtils.getProperEndYear(startYearValue,endYearValue);
 
+            if ( startYearValue >= endYearValue )
+                startYearValue = endYearValue - 1;
+
             mYearParams = ScoreCreditUtils.parseNumber2Years(startYearValue,endYearValue);
 
             mTvYear.setText(String.format("%d-%d学年",startYearValue,endYearValue));
