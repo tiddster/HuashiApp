@@ -395,7 +395,11 @@ public class ScoreCreditUtils {
             if (score.jxb_id==null)
                 score.jxb_id="  ";
 
-            score.kcxzmc=item.getString("kcxzmc");
+            try {
+                score.kcxzmc = item.getString("kcxzmc");
+            } catch (JSONException e) {
+                score.kcxzmc = null;
+            }
 
             score.xnm=item.getInt("xnm");
             score.xqm=item.getInt("xqm");
