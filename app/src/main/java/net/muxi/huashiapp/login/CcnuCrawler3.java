@@ -39,6 +39,7 @@ public class CcnuCrawler3 {
 
     private Subscription loginSubscription;
     private Subscription libSubscription;
+    private Subscription loginSystemSubscription;
     private SingleCCNUClient client;
     public CcnuService3 clientWithRetrofit;
     private Date date;
@@ -52,6 +53,40 @@ public class CcnuCrawler3 {
         date = new Date();
         client = new SingleCCNUClient();
         clientWithRetrofit = SingleCCNUClient.getClient();
+    }
+    
+    public void performLoginSystem(Subscriber<ResponseBody> subscriber) {
+        // 查询成绩的时候 cookie可能因为请求了课表之后失效 所以重新登录
+        loginSystemSubscription = clientWithRetrofit.performSystemLogin()
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
+                    @Override
+                    public Observable<ResponseBody> call(ResponseBody responseBody) {
+                        try {
+                            if (isSingleSignOn(responseBody.string())) {
+                                return Observable.error(new SingleSignException());
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return Observable.empty();
+                    }
+                })
+                .retry(new Func2<Integer, Throwable, Boolean>() {
+                    @Override
+                    public Boolean call(Integer integer, Throwable throwable) {
+                        if (integer>1)
+                            return false;
+                        if (throwable instanceof SingleSignException){
+                            getClient().clearAllCookie();
+                            Log.e(TAG, "call: retry");
+                            return true;
+                        }else
+                            return false;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber);
     }
 
     public void performLogin(Subscriber<ResponseBody> subscriber, final User user) {
@@ -291,6 +326,8 @@ public class CcnuCrawler3 {
             loginSubscription.unsubscribe();
         if (libSubscription != null && libSubscription.isUnsubscribed())
             libSubscription.unsubscribe();
+        if (loginSystemSubscription != null && loginSystemSubscription.isUnsubscribed())
+            loginSystemSubscription.unsubscribe();
     }
 
     public void saveLoginState(Intent intent, User user, String type) {

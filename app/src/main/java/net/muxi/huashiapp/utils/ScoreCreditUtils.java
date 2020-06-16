@@ -373,6 +373,10 @@ public class ScoreCreditUtils {
 
     public @Nullable static List<Score> getScoreFromJson(String json) throws JSONException {
         List<Score> list = new ArrayList<>();
+        //cookie失效 json是登陆界面的html 丢出一个特定的异常
+        if ( json.contains( "http://202.114.33.241:80/zftal-ui-v5-1.0.2/assets/images/logo/logo_jw_d.png")) {
+            throw  new JSONException("cookie expired");
+        }
         JSONObject jsonRoot = new JSONObject(json);
         JSONArray items = jsonRoot.getJSONArray("items");
         if (items == null || items.length() == 0) {

@@ -28,6 +28,7 @@ import com.muxistudio.common.util.ToastUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.CcnuCrawler3;
 import net.muxi.huashiapp.login.GetScorsePresenter;
 import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.ui.score.RequestRetry;
@@ -109,13 +110,12 @@ public class ScoreDisplayActivity extends ToolbarActivity {
     }
 
     public void getScores() {
-        LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
+       // LoadingDialog loadingDialog = showLoading("正在请求成绩数据~~");
         Observable<ResponseBody>[] scoreArray=new Observable[mYearParams.size()*mTermParams.size()];
         for (int i = 0; i <mYearParams.size() ; i++) {
             for (int j = 0; j <mTermParams.size() ; j++) {
                 scoreArray[i*mTermParams.size()+j] = SingleCCNUClient.getClient().getScores(mYearParams.get(i),mTermParams.get(j),false, String.valueOf(date.getTime()),100,1,"","asc",time.get() );
             }
-
         }
 
         subscription=Observable.merge(scoreArray)
@@ -124,13 +124,13 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 .subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
-                        hideLoading();
+                        //hideLoading();
                         Log.i(TAG, "onCompleted: ");
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        hideLoading();
+                        //hideLoading();
                         Log.i(TAG, "onError: ");
                         if (e instanceof HttpException) {
                             Log.e(TAG, "onError: response code"+((HttpException)e).code() );
@@ -150,9 +150,15 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                         try {
                             scoreList = ScoreCreditUtils.getScoreFromJson(responseBody.string());
                         } catch (JSONException e) {
-                            e.printStackTrace();
-                            ToastUtil.showShort(R.string.score_error_1);
-                            mMultiStatusView.showError();
+                            if ( e.getMessage().equals("cookie expired")) {
+                                //如果cookie过期 获取成绩失败，要重新登陆
+                                performLogin();
+                                onError(e);
+                            } else {
+                                e.printStackTrace();
+                                ToastUtil.showShort(R.string.score_error_1);
+                                mMultiStatusView.showError();
+                            }
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -166,6 +172,41 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                 });
 
 
+
+    }
+
+    //cookie如果失效 需要重新登陆
+    public void performLogin () {
+        CcnuCrawler3 ccnuCrawler3 = new CcnuCrawler3();
+        ccnuCrawler3.performLoginSystem(new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "onCompleted: ");
+                ccnuCrawler3.getClient().saveCookieToLocal();
+                getScores();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (e instanceof HttpException) {
+                    Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                    try {
+                        Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                } else if (e instanceof NullPointerException)
+                    Log.e(TAG, "onError: null   " + e.getMessage());
+                else
+                    Log.e(TAG, "onError: ");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Log.i(TAG, "onNext: " + "login success");
+            }
+        });
 
     }
 
@@ -206,6 +247,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             }
         }
 
+        hideLoading();
         if (filteredList.isEmpty()) {
             mMultiStatusView.showEmpty();
             return true;
@@ -330,7 +372,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         initView();
         //performLogin();
 
-
+        showLoading("正在请求成绩数据~~");
         getScores();
     }
 
