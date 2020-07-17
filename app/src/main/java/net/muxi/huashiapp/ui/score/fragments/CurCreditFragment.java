@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.login.CcnuCrawler3;
 import net.muxi.huashiapp.login.SingleCCNUClient;
 import net.muxi.huashiapp.ui.score.adapter.CreditAdapter;
 import net.muxi.huashiapp.utils.ScoreCreditUtils;
@@ -30,13 +33,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.HttpException;
 import rx.Observable;
+import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
+import static rx.plugins.RxJavaHooks.onError;
+
 //当前已修学分
 public class CurCreditFragment extends BaseAppFragment {
+
+    private final static String TAG = "getScoresAndCredits";
+    private static int ifReLogin = 0;
 
     private int startYear,endYear;
     private Date date=new Date();
@@ -80,15 +90,61 @@ public class CurCreditFragment extends BaseAppFragment {
                                         try {
                                             list=ScoreCreditUtils.getScoreFromJson(responseBody.string());
                                         } catch (JSONException e) {
-                                            e.printStackTrace();
+                                            if ( e.getMessage().equals("cookie expired") && ifReLogin == 0 ) {
+                                                //如果cookie过期 获取成绩失败，要重新登陆
+                                                ifReLogin = 1;
+                                                performLogin();
+                                                onError(e);
+                                            } else {
+                                                e.printStackTrace();
+                                                hideLoading();
+                                                ToastUtil.showShort(R.string.score_error_1);
+                                            }
                                         } catch (IOException e) {
                                             e.printStackTrace();
+                                            hideLoading();
+                                            ToastUtil.showShort(R.string.score_error_1);
                                         }
                                         return Observable.just(list);
                                     }
                                 });
         }
         return observables;
+    }
+
+    //cookie如果失效 需要重新登陆
+    public void performLogin () {
+        CcnuCrawler3 ccnuCrawler3 = new CcnuCrawler3();
+        ccnuCrawler3.performLoginSystem(new Subscriber<ResponseBody>() {
+            @Override
+            public void onCompleted() {
+                Log.i(TAG, "onCompleted: ");
+                ccnuCrawler3.getClient().saveCookieToLocal();
+                loadCredit();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                if (e instanceof HttpException) {
+                    Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                    try {
+                        Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                    } catch (Exception e1) {
+                        e1.printStackTrace();
+                    }
+                } else if (e instanceof NullPointerException)
+                    Log.e(TAG, "onError: null   " + e.getMessage());
+                else
+                    Log.e(TAG, "onError: ");
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onNext(ResponseBody responseBody) {
+                Log.i(TAG, "onNext: " + "login success");
+            }
+        });
+
     }
 
     public void loadCredit(Observable<List<Score>>[] listObservable) {
@@ -159,7 +215,7 @@ public class CurCreditFragment extends BaseAppFragment {
     private void initView(View view){
         mElvCredit = view.findViewById(R.id.eplv_credit);
         mTvTotalCredit = view.findViewById(R.id.tv_credit_total_value);
-
+        ifReLogin = 0;
     }
 
     interface ViewPagerSlideListener{
