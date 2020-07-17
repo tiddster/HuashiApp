@@ -75,13 +75,14 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         String totalScore = String.format("总成绩:%s",mScores.get(position).grade);
 
+        holder.mCbCredit.setVisibility(View.VISIBLE);
 
         //由于recycleview的复用，多页的checkbox会出现混乱，点击一个可能好几个跟着变，所以要用这个map来记录
         if(mCheckMap.keySet().contains(position)){
-          if(mCheckMap.get(position))
-            holder.mCbCredit.setChecked(true);
-          else
-            holder.mCbCredit.setChecked(false);
+            if(mCheckMap.get(position))
+                holder.mCbCredit.setChecked(true);
+            else
+                holder.mCbCredit.setChecked(false);
         }
 
 
