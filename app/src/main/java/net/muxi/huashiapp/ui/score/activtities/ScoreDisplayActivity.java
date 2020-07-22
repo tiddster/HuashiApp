@@ -123,11 +123,12 @@ public class ScoreDisplayActivity extends ToolbarActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        //hideLoading();
+                        hideLoading();
                         Log.i(TAG, "onError: ");
                         if (e instanceof HttpException) {
                             Log.e(TAG, "onError: response code"+((HttpException)e).code() );
-
+                            ToastUtil.showShort("学校服务器异常，不是匣子的锅QAQ");
+                            mMultiStatusView.showError();
                         }
                         e.printStackTrace();
                     }
@@ -150,6 +151,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                                 onError(e);
                             } else {
                                 e.printStackTrace();
+                                hideLoading();
                                 ToastUtil.showShort(R.string.score_error_1);
                                 mMultiStatusView.showError();
                             }
