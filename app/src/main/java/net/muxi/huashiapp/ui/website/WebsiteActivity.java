@@ -132,8 +132,13 @@ public class WebsiteActivity extends ToolbarActivity {
         mRecyclerView.setAdapter(adapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter.setOnItemClickListener((view, websiteData1, position) -> {
-            Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData1.get(position).getUrl());
-            startActivity(intent);
+            if ( websiteData1.get(position).getSite().contains("教务管理系统")) {
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, "https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2Fxk.ccnu.edu.cn%2Fsso%2Fpziotlogin");
+                startActivity(intent);
+            } else {
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData1.get(position).getUrl());
+                startActivity(intent);
+            }
         });
 
     }
