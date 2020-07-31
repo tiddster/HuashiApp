@@ -32,6 +32,14 @@ public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteVi
         this.mWebsiteDataList = websiteData;
     }
 
+    public void refreshData(List<WebsiteData> websiteData) {
+        int preSize = mWebsiteDataList.size();
+        mWebsiteDataList.clear();
+        notifyItemRangeRemoved(0, preSize);
+        mWebsiteDataList.addAll(websiteData);
+        notifyItemRangeInserted(0, websiteData.size());
+    }
+
     @Override
     public MySiteViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_website, parent, false);

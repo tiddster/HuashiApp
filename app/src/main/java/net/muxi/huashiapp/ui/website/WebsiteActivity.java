@@ -32,6 +32,7 @@ public class WebsiteActivity extends ToolbarActivity {
 
     private RecyclerView mRecyclerView;
     private LoadingDialog mLoadingDialog;
+    private WebsiteAdapter adapter;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, WebsiteActivity.class);
@@ -54,21 +55,25 @@ public class WebsiteActivity extends ToolbarActivity {
             e.printStackTrace();
         }
 
+        mLoadingDialog = showLoading("校园网站正在加载中~");
+        setTitle("常用网站");
+
         if (mWebsiteDatas != null && mWebsiteDatas.size() > 0) {
             //学生信息服务平台暂时无法使用
-            setupRecyclerView(filterData(mWebsiteDatas));
-            Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
+            CampusFactory.getRetrofitService().getWebsite()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
                     .subscribe(new Observer<List<WebsiteData>>() {
                         @Override
                         public void onCompleted() {
-
+                            hideLoading();
                         }
 
                         @Override
                         public void onError(Throwable e) {
                             e.printStackTrace();
+                            hideLoading();
+                            setupRecyclerView(filterData(mWebsiteDatas));
                             showSnackbarShort(getString(R.string.tip_net_error));
                         }
 
@@ -85,9 +90,6 @@ public class WebsiteActivity extends ToolbarActivity {
                         }
                     });
         }else {
-
-            mLoadingDialog = showLoading("校园网站正在加载中~");
-            setTitle("常用网站");
             Subscription subscription = CampusFactory.getRetrofitService().getWebsite()
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeOn(Schedulers.newThread())
@@ -95,7 +97,6 @@ public class WebsiteActivity extends ToolbarActivity {
                         @Override
                         public void onCompleted() {
                             hideLoading();
-
                         }
 
                         @Override
@@ -127,20 +128,7 @@ public class WebsiteActivity extends ToolbarActivity {
     }
 
     public void setupRecyclerView(List<WebsiteData> websiteData) {
-        WebsiteAdapter adapter;
-        adapter = new WebsiteAdapter(websiteData);
-        mRecyclerView.setAdapter(adapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter.setOnItemClickListener((view, websiteData1, position) -> {
-            if ( websiteData1.get(position).getSite().contains("教务管理系统")) {
-                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, "https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2Fxk.ccnu.edu.cn%2Fsso%2Fpziotlogin");
-                startActivity(intent);
-            } else {
-                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData1.get(position).getUrl());
-                startActivity(intent);
-            }
-        });
-
+        adapter.refreshData(websiteData);
     }
 
     private List filterData(List<WebsiteData> dataList) {
@@ -160,6 +148,19 @@ public class WebsiteActivity extends ToolbarActivity {
     }
 
     private void initView() {
+        adapter = new WebsiteAdapter(new ArrayList<>());
+        adapter.setOnItemClickListener((view, websiteData1, position) -> {
+            if ( websiteData1.get(position).getSite().contains("教务管理系统")) {
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, "https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2Fxk.ccnu.edu.cn%2Fsso%2Fpziotlogin");
+                startActivity(intent);
+            } else {
+                Intent intent = WebViewActivity.newIntent(WebsiteActivity.this, websiteData1.get(position).getUrl());
+                startActivity(intent);
+            }
+        });
+
         mRecyclerView = findViewById(R.id.recycler_view);
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
