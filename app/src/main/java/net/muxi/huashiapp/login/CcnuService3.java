@@ -20,7 +20,7 @@ public interface CcnuService3 {
 
     //教务系统的登录
     //需要携带cookie cookie没有放在header里面
-    @GET("http://xk.ccnu.edu.cn/ssoserver/login?ywxt=jw&url=xtgl/index_initMenu.html")
+    @GET("https://account.ccnu.edu.cn/cas/login?service=http%3A%2F%2Fxk.ccnu.edu.cn%2Fsso%2Fpziotlogin")
     Observable<ResponseBody> performSystemLogin();
 
 
@@ -28,14 +28,14 @@ public interface CcnuService3 {
     @GET("https://account.ccnu.edu.cn/cas/login")
     Observable<Response<ResponseBody>>firstLogin();
 
-    @POST("http://xk.ccnu.edu.cn/cjcx/cjcx_cxDgXscj.html?doType=query&gnmkdm=N305005")
+    @POST("http://xk.ccnu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&gnmkdm=N305005")
     @FormUrlEncoded
     Observable<ResponseBody>getScores(@Field("xnm") String xnm, @Field("xqm") String xqm, @Field("_search") boolean search,
                                       @Field("nd") String nd, @Field("queryModel.showCount") int num, @Field("queryModel.currentPage") int page,
                                       @Field("queryModel.sortName") String sortname, @Field("queryModel.sortOrder") String order, @Field("time") int time);
 
     //获取平时成绩和期末成绩
-    @POST("http://xk.ccnu.edu.cn/cjcx/cjcx_cxCjxq.html?time=1562376341836&gnmkdm=N305005")
+    @POST("http://xk.ccnu.edu.cn/jwglxt/cjcx/cjcx_cxCjxq.html?time=1562376341836&gnmkdm=N305005")
     @FormUrlEncoded
     Observable<ResponseBody>getUAE(@Field(("jxb_id"))String jxb_id,@Field("xnm")int xnm,@Field(("xqm"))int xqm,@Field("kcmc")String name);
     @GET("http://202.114.34.15/reader/hwthau.php")
