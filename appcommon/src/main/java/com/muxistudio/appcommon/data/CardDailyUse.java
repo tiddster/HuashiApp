@@ -1,5 +1,6 @@
 package com.muxistudio.appcommon.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CardDailyUse {
@@ -148,5 +149,69 @@ public class CardDailyUse {
                 this.smtOutMoney = smtOutMoney;
             }
         }
+    }
+
+    public static CardDailyUse convert(CardAccount cardAccount) {
+        CardDailyUse c = new CardDailyUse();
+        List<ListBean> l = new ArrayList<>();
+
+
+        String t = "";
+        List<ListBean.DataBean> dataBeans = new ArrayList<>();
+        for (CardAccount.DataBean.ListBean data : cardAccount.getData().getList()) {
+            if ( t.equals("") ) {
+                t = data.getDealDate().substring(0,10);
+
+            } else if ( t.equals(data.getDealDate().substring(0,10)) ) {
+                ListBean listBean = new ListBean();
+                List<ListBean.DataBean> tmp = new ArrayList<>();
+                tmp.addAll(dataBeans);
+                listBean.setData(tmp);
+                listBean.setTitle(t);
+                l.add(listBean);
+            }
+
+            ListBean.DataBean dataBean = new ListBean.DataBean();
+            dataBean.setSmtDealDateTimeTxt(data.getDealDate());
+            dataBean.setDate(data.getDealDate().substring(0,10));
+            dataBean.setSmtDealName(data.getDealName());
+            dataBean.setSmtOrgName(data.getOrgName());
+            dataBean.setSmtOutMoney(Double.valueOf(data.getOutMoney()).toString());
+            dataBean.setTime(data.getDealDate().substring(11,19));
+            dataBean.setSmtTransMoney(Double.valueOf(data.getTransMoney()).toString());
+
+            dataBeans.add(dataBean);
+
+        }
+        c.setList(l);
+
+        return c;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder s = new StringBuilder(
+                "result : "+this.isResult()+",\n" +
+                "msg : "+this.getMsg()+",\n" +
+                "list : "+"[\n");
+
+        for ( CardDailyUse.ListBean listBean : this.getList() ) {
+            StringBuilder l = new StringBuilder("\ttitle : "+listBean.getTitle()+",\n" +
+                    "\tdata : [\n");
+            for ( CardDailyUse.ListBean.DataBean dataBean : listBean.getData() ) {
+                l.append("\t\t{\n" +
+                        "\t\t\tsmtDealName : "+dataBean.getSmtDealName()+",\n" +
+                        "\t\t\tsmtTransMoney : "+dataBean.getSmtTransMoney()+"\n" +
+                        "\t\t\tsmtDealDateTimeTxt : "+dataBean.getSmtDealDateTimeTxt()+"\n" +
+                        "\t\t\tdate : "+dataBean.getDate()+"\n" +
+                        "\t\t\ttime : "+dataBean.getTime()+"\n" +
+                        "\t\t\tsmtOrgName : "+dataBean.getSmtOrgName()+"\n" +
+                        "\t\t\tsmtInMoney : "+dataBean.getSmtInMoney()+"\n" +
+                        "\t\t\tsmtOutMoney : "+dataBean.getSmtOutMoney()+"\n" +
+                        "\t\t},\n");
+            }
+            s.append(l.toString());
+        }
+        return s.toString();
     }
 }

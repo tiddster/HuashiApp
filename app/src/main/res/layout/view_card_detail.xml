@@ -68,6 +68,7 @@
     <com.muxistudio.common.jsbridge.BridgeWebView
         android:id="@+id/consume_view"
         android:layout_marginTop="32dp"
+        android:visibility="gone"
         android:layout_below="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

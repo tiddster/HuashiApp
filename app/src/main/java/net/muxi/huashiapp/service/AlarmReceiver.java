@@ -10,6 +10,7 @@ import android.util.Log;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.AttentionBook;
 import com.muxistudio.appcommon.data.BorrowedBook;
+import com.muxistudio.appcommon.data.CardBalance;
 import com.muxistudio.appcommon.data.CardDailyUse;
 import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.data.Course;
@@ -80,7 +81,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (intent.getIntExtra(Constants.ALARMTIME, 2) == 2) {
             Log.d(TAG,
-                PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule),true) + "");
+                    PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true) + "");
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
                 checkCourses();
                 Log.d(TAG, "check course");
@@ -111,35 +112,34 @@ public class AlarmReceiver extends BroadcastReceiver {
             }
         }
     }
-//todo
+
+    //todo
     private void checkCard() {
         //todo update
-        CardDataPresenter presenter= new CardDataPresenter(null);
+        CardDataPresenter presenter = new CardDataPresenter(null);
         presenter.getCardObservable().observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber() {
+                .subscribe(new Observer<CardBalance>() {
                     @Override
-                    public void onCompleted() { Logger.d("提醒校园卡消费");}
+                    public void onCompleted() {
+                        Logger.d("提醒校园卡消费");
+                    }
 
                     @Override
-                    public void onError(Throwable e) { e.printStackTrace();}
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
 
                     @Override
-                    public void onNext(Object o) {
-                        CardDataEtp etp = presenter.getCardDataEtp();
-                        CardDailyUse use = (CardDailyUse) o;
-
+                    public void onNext(CardBalance cardBalance) {
                         try {
-                            if (Integer.valueOf(etp.getModel().getBalance())
-                                    < CARD_LEAVE_MONEY) {
+                            if (cardBalance.getData().getBalance() < CARD_LEAVE_MONEY) {
                                 NotifyUtil.show(mContext, CardActivity.class,
                                         mContext.getResources().getString(
                                                 R.string.notify_title_card),
                                         mContext.getResources().getString(
                                                 R.string.notify_content_card));
                             }
-                        } catch (NumberFormatException e) {
-                            e.printStackTrace();
-                        } catch (Resources.NotFoundException e) {
+                        } catch (NumberFormatException | Resources.NotFoundException e) {
                             e.printStackTrace();
                         }
                     }
@@ -218,14 +218,14 @@ public class AlarmReceiver extends BroadcastReceiver {
             day = 1;
             curWeek++;
         } else {
-            day ++;
+            day++;
         }
 
         HuaShiDao dao = new HuaShiDao();
         List<Course> allCourses = dao.loadAllCourses();
         List<String> courses = new ArrayList<>();
 
-        for (int i = 0;i < allCourses.size();i ++) {
+        for (int i = 0; i < allCourses.size(); i++) {
             Logger.d(allCourses.get(i).id);
             if (allCourses.get(i).id != null) {
                 if (Integer.parseInt(allCourses.get(i).id) < 1000
@@ -256,8 +256,8 @@ public class AlarmReceiver extends BroadcastReceiver {
         loginPresenter.login(new UserAccountManager().getInfoUser())
                 .subscribeOn(Schedulers.io())
                 .flatMap((Func1<Boolean, Observable<List<Score>>>) aBoolean ->
-                        CampusFactory.getRetrofitService().getScores( mCurYear + "",
-                        mCurTerm + ""))
+                        CampusFactory.getRetrofitService().getScores(mCurYear + "",
+                                mCurTerm + ""))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Score>>() {
                     @Override

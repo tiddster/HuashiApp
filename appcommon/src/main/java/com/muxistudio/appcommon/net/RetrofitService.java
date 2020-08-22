@@ -11,6 +11,8 @@ import com.muxistudio.appcommon.data.BookPost;
 import com.muxistudio.appcommon.data.BookSearchResult;
 import com.muxistudio.appcommon.data.BorrowedBook;
 import com.muxistudio.appcommon.data.CalendarData;
+import com.muxistudio.appcommon.data.CardAccount;
+import com.muxistudio.appcommon.data.CardBalance;
 import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.data.Config;
@@ -153,14 +155,13 @@ public interface RetrofitService {
     @GET("lesson/")
     Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String, String> map);
 
-    //查询余额  除了学号其他传固定值 http://console.ccnu.edu
-    // .cn/ecard/getTrans?userId=2013211389&days=90&startNum=0&num=200
-    @GET("http://console.ccnu.edu.cn/ecard/getTrans")
-    Observable<List<CardData>> getCardBalance(
-            @Query("userId") String sid,
-            @Query("days") String day,
-            @Query("startNum") String start,
-            @Query("num") String num);
+    //查询校园卡余额
+    @GET("card/v1/balance")
+    Observable<CardBalance> getCardBalance();
+
+    //查询校园卡消费流水
+    @GET("card/v1/account")
+    Observable<CardAccount> getCardAccount(@Query("limit") String limit, @Query("page") String page, @Query("start") String start, @Query("end") String end);
 
     @GET("app/latest/")
     Observable<VersionData> getLatestVersion();

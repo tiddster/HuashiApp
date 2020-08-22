@@ -1,5 +1,9 @@
 package com.muxistudio.appcommon.data;
 
+import com.muxistudio.common.util.DateUtil;
+
+import java.util.Date;
+
 //从企业号拿过来的数据格式
 //card data enterprise
 public class CardDataEtp {
@@ -124,5 +128,29 @@ public class CardDataEtp {
         public void setConsumeTotal(String consumeTotal) {
             this.consumeTotal = consumeTotal;
         }
+    }
+
+    public static CardDataEtp convert(CardBalance cardBalance) {
+        CardDataEtp c = new CardDataEtp();
+        ModelBean m = new ModelBean();
+
+        m.setBalance(Double.valueOf(cardBalance.getData().getBalance()).toString());
+        m.setSmtDealdatetimeTxt(DateUtil.getToday(new Date()));
+
+        c.setModel(m);
+
+        return c;
+    }
+
+    @Override
+    public String toString() {
+        return "userId : "+this.getModel().getUserId()+"\n" +
+                "name : "+this.getModel().getName()+"\n" +
+                "img : "+this.getModel().getImg()+"\n" +
+                "deptName : "+this.getModel().getDeptName()+"\n" +
+                "balance : "+this.getModel().getBalance()+"\n" +
+                "smtDealdatetimeTxt : "+this.getModel().getSmtDealdatetimeTxt()+"\n" +
+                "dataSum : "+this.getModel().getDataSum()+"\n" +
+                "consumeTotal : "+this.getModel().getConsumeTotal()+"\n";
     }
 }

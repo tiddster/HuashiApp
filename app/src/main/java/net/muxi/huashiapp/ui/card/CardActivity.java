@@ -77,6 +77,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
 
     @Override
     public void initView(CardDailyUse dailyUse, CardDataEtp etp) {
+        hideLoading();
         mMultiStatusView.showContent();
         mTvDate.setText("截止" + etp.getModel().getSmtDealdatetimeTxt());
         mMoney.setText(etp.getModel().getBalance());
@@ -123,6 +124,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
     }
 
     private void initView() {
+        showLoading("正在查询");
         mMultiStatusView = findViewById(R.id.multi_status_view);
         mMoney = findViewById(R.id.money);
         mTvDate = findViewById(R.id.tv_date);
