@@ -209,20 +209,29 @@ public class TimeTableUtil {
      * @return 相隔的周数
      * @throws ParseException
      */
-    public static int getDistanceWeek(String start,String end) throws ParseException {
-        DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd",Locale.CHINESE);
-        Date date1=dataFormat.parse(start);
-        Date date2=dataFormat.parse(end);
-        Calendar calendar=Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        int days=(int)((date2.getTime()-date1.getTime())/(1000*60*60*24));
-        calendar.setTime(date1);
-        int weekDay=calendar.get(Calendar.DAY_OF_WEEK)-1;
-        System.out.println(weekDay);
-        int disWeeks=days/7;
-        int off=days%7;
+    public static int getDistanceWeek(String start, String end) throws ParseException {
+        int[][] convert = {{1,2,3,4,5,6,7},{7,1,2,3,4,5,6}};
 
-        return (off+weekDay>7?1:0)+disWeeks;
+        DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
+        Date date1 = dataFormat.parse(start);
+        Date date2 = dataFormat.parse(end);
+
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar1.setTime(date1);
+        int weekDay1 = calendar1.get(Calendar.DAY_OF_WEEK);
+        date1.setTime(date1.getTime()-(convert[1][weekDay1-1]-1)*1000 * 60 * 60 * 24);
+
+
+
+        Calendar calendar2 = Calendar.getInstance();
+        calendar2.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar2.setTime(date2);
+        int weekDay2 = calendar2.get(Calendar.DAY_OF_WEEK);
+        date2.setTime(date2.getTime()-(convert[1][weekDay2-1]-1)*1000 * 60 * 60 * 24);
+
+        return (int)(date2.getTime()-date1.getTime()) / (1000 * 60 * 60 * 24) /7;
+
     }
   /**
    * 保存当前的周数
