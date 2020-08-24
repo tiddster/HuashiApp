@@ -33,9 +33,11 @@ public class WebsiteAdapter extends RecyclerView.Adapter<WebsiteAdapter.MySiteVi
     }
 
     public void refreshData(List<WebsiteData> websiteData) {
-        int preSize = mWebsiteDataList.size();
-        mWebsiteDataList.clear();
-        notifyItemRangeRemoved(0, preSize);
+        if ( mWebsiteDataList.size() > 0 ) {
+            int preSize = mWebsiteDataList.size();
+            mWebsiteDataList.clear();
+            notifyItemRangeRemoved(0, preSize);
+        }
         mWebsiteDataList.addAll(websiteData);
         notifyItemRangeInserted(0, websiteData.size());
     }

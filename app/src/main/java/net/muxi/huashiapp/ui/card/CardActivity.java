@@ -124,7 +124,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
     }
 
     private void initView() {
-        showLoading("正在查询");
+        mLoadingDialog = showLoading("正在查询");
         mMultiStatusView = findViewById(R.id.multi_status_view);
         mMoney = findViewById(R.id.money);
         mTvDate = findViewById(R.id.tv_date);
