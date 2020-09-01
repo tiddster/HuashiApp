@@ -19,6 +19,7 @@ import rx.schedulers.Schedulers;
 public class CardDataPresenter {
 
     private CardDataEtp mCardDataEtp;
+    private CardBalance mCardBalance = new CardBalance();
 
     private ICardView iCardView;
 
@@ -58,11 +59,11 @@ public class CardDataPresenter {
 
                                     @Override
                                     public void onNext(CardAccount cardAccount) {
-                                        //System.out.print(cardAccount.toString());
-                                        CardDailyUse use = CardDailyUse.convert(cardAccount);
-                                        //System.out.print(use.toString());
+
+                                        //CardDailyUse use = CardDailyUse.convert(cardAccount);
                                         if (iCardView != null)
-                                            iCardView.initView(use, mCardDataEtp);
+                                            iCardView.initView(cardAccount, mCardBalance);
+                                          //  iCardView.initView(use, mCardDataEtp);
                                     }
                                 });
                     }
@@ -75,7 +76,8 @@ public class CardDataPresenter {
                     @Override
                     public void onNext(CardBalance cardBalance) {
                         //System.out.print(cardBalance.toString());
-                        mCardDataEtp = CardDataEtp.convert(cardBalance);
+                        mCardBalance = cardBalance;
+                        //mCardDataEtp = CardDataEtp.convert(cardBalance);
                         //System.out.print(mCardDataEtp.toString());
                     }
                 });

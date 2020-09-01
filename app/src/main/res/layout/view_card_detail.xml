@@ -1,77 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/money_sign"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_toLeftOf="@+id/money"
-        android:text="¥"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="48sp"
-        />
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/money"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/money_sign"
-        android:layout_centerHorizontal="true"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="48sp"
-        tools:text="180.00"
-        />
+        <TextView
+            android:id="@+id/money_sign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¥"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="48sp" />
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="48sp"
+            tools:text="180.00" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txt2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/money_sign"
-        android:layout_centerInParent="true"
+        android:layout_gravity="center_horizontal"
         android:text="剩余金额"
-        android:textSize="@dimen/medium_size"
-        />
-
-
-
+        android:textSize="@dimen/medium_size" />
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt2"
-        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
         android:textColor="@color/colorAccent"
-        android:layout_centerHorizontal="true"
         android:textSize="@dimen/small_size"
-        tools:text="==============="
-        />
+        tools:text="===============" />
 
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@id/tv_date"
+        android:layout_gravity="center_horizontal"
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:layout_marginTop="20dp"
-        android:background="@color/divider"/>
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:background="#BCBCBC" />
 
 
     <com.muxistudio.common.jsbridge.BridgeWebView
         android:id="@+id/consume_view"
-        android:layout_marginTop="32dp"
-        android:visibility="gone"
-        android:layout_below="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/divider"
+        android:layout_marginTop="32dp"
+        android:visibility="gone" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tl_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="10dp"
+        app:tabMode="fixed"
+        app:tabGravity="fill"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vp_detail"
+        android:layout_marginVertical="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
-</RelativeLayout>
+</LinearLayout>
