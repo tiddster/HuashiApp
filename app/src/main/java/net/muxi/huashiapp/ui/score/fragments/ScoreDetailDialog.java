@@ -134,7 +134,7 @@ public class ScoreDetailDialog  extends CenterDialogFragment{
         }
         if (m2.find()){
             //缓考的总评成绩为空 这样获取会得到一长串html文本，所以做长度判断是否是数字
-            if ( m2.group(2).length() > 3 )
+            if ( m2.group(2).length() > 5 )
                 strings[1] = String.format("%s (%s%%)",0,m2.group(1));
             else
                 strings[1]= String.format("%s (%s%%)",m2.group(2),m2.group(1));
