@@ -132,7 +132,7 @@ public class MainActivity extends BaseAppActivity implements
                     if (versionData == null){
                         return;
                     }
-                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME)) {
+                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME) && Integer.parseInt(versionData.getVersion().split(".")[2]) > Integer.parseInt(BuildConfig.VERSION_NAME.split(".")[2])) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
                         checkUpdateDialog.setContent(
