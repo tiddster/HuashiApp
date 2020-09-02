@@ -1,7 +1,8 @@
 package net.muxi.huashiapp.ui.card;
 
-import android.annotation.SuppressLint;
+import android.content.res.AssetManager;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.CardAccount;
-import com.muxistudio.appcommon.data.CardDailyUse;
 
 import net.muxi.huashiapp.R;
 
@@ -80,19 +80,23 @@ public class CardDetailFragment extends Fragment {
             CardAccount.DataBean.ListBean data = mDatas.get(position);
             holder.name.setText(data.getDealName());
             if ( data.getDealName().equals("消费") ) {
-                holder.num.setText(String.format("-¥%s", Double.valueOf(data.getTransMoney()).toString()));
+                holder.num.setText(String.format("-%s", Double.valueOf(data.getTransMoney()).toString()));
                 holder.num.setTextColor(Color.parseColor("#3D9140"));
             } else if ( data.getDealName().contains("充值") || data.getDealName().contains("补助") ) {
-                holder.num.setText(String.format("+¥%s", Double.valueOf(data.getTransMoney()).toString()));
+                holder.num.setText(String.format("+%s", Double.valueOf(data.getTransMoney()).toString()));
                 holder.num.setTextColor(Color.parseColor("#B0171F"));
             } else {
-                holder.num.setText(String.format("¥%s", Double.valueOf(data.getTransMoney()).toString()));
+                holder.num.setText(String.format("%s", Double.valueOf(data.getTransMoney()).toString()));
                 holder.num.setTextColor(Color.parseColor("#A6A4FF"));
             }
             holder.org.setText(data.getOrgName());
             String date = data.getDealDate().substring(0,10);
             String tim = data.getDealDate().substring(11,19);
             holder.time.setText(date+"\n"+tim);
+
+            AssetManager mgr = getActivity().getAssets();
+            Typeface tf = Typeface.createFromAsset(mgr, "font/lao_sangam_mn.ttf");
+            holder.num.setTypeface(tf);
         }
 
         @Override

@@ -5,13 +5,14 @@
     android:layout_marginTop="8dp"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:paddingHorizontal="30dp">
 
         <TextView
+            android:layout_gravity="center_vertical"
             android:id="@+id/tv_card_detail_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,6 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:text="-¥2.00"
+                android:typeface="serif"
                 android:textColor="#A6A4FF"
                 android:textSize="18sp" />
 
@@ -54,13 +56,14 @@
                 android:id="@+id/tv_card_detail_org"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_below="@id/tv_card_detail_name"
+                android:layout_marginTop="5dp"
                 android:text="华中师范大学/后勤集团/饮食中心/桂香园餐厅新/一楼/川味粉丝煲"
                 android:textColor="#6A6A6A"
                 android:textSize="10sp" />
         </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

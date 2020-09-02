@@ -13,6 +13,7 @@ import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.IMarker;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -38,23 +39,20 @@ public class CardChartFragment extends Fragment {
 
         List<Entry> chartData = new ArrayList<>();
 
-        for (int i = 0; i < data.size(); i++) {
+        for (int i = 0; i < data.size(); i++)
             chartData.add(new Entry((float) i, (float) data.get(i).sum));
-            System.out.println(data.get(i).time+"     "+data.get(i).sum);
-        }
 
         LineDataSet lineDataSet = new LineDataSet(chartData, "金额");
 
         lineDataSet.setDrawCircles(true);
 
-        lineDataSet.setColor(Color.parseColor("#3d81d1"));
-        lineDataSet.setCircleColor(Color.parseColor("#3d81d1"));
+        lineDataSet.setColor(Color.parseColor("#5b9ce8"));
+        lineDataSet.setCircleColor(Color.parseColor("#5b9ce8"));
         lineDataSet.setLineWidth(2f); //线宽
         lineDataSet.setCircleRadius(5f); //点的直径
         lineDataSet.setDrawCircleHole(true); //设置曲线值的圆点是实心还是空心
         lineDataSet.setHighLightColor(Color.parseColor("#9fb8d6"));
         lineDataSet.setValueTextSize(0); //值的数字大小
-        lineDataSet.setFormSize(5f);
         lineDataSet.setMode(LineDataSet.Mode.LINEAR); //线图设置为曲线
 
         Description description = mChart.getDescription();
@@ -70,6 +68,22 @@ public class CardChartFragment extends Fragment {
             }
         });
 
+        Legend legend = mChart.getLegend();
+        //是否显示
+        legend.setEnabled(true);
+        //图例样式：有圆点，正方形，短线 几种样式
+        legend.setForm(Legend.LegendForm.LINE);
+        // 图例显示的位置：如下2行代码设置图例显示在左下角
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        // 图例距离x轴的距离
+        //legend.setXEntrySpace(200f);  不行
+        //图例的大小
+        legend.setFormSize(5f);
+        // 图例描述文字大小
+        legend.setTextSize(12);
+        // 图例距离x轴的距离
+        mChart.setExtraBottomOffset(10f);
 
         XAxis xAxis = mChart.getXAxis();
         YAxis leftYAxis = mChart.getAxisLeft();

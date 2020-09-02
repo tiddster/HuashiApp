@@ -4,11 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lc_card"
         android:layout_width="match_parent"
         android:layout_height="250dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="15dp" />
+
+    <TextView
+        android:layout_marginTop="6dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="#bcbcbc"
+        android:textSize="10sp"
+        android:text="点击图表可查看每日具体消费数额"/>
 
 </LinearLayout>
