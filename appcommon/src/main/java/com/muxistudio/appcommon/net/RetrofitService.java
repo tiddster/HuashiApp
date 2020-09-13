@@ -13,19 +13,16 @@ import com.muxistudio.appcommon.data.BorrowedBook;
 import com.muxistudio.appcommon.data.CalendarData;
 import com.muxistudio.appcommon.data.CardAccount;
 import com.muxistudio.appcommon.data.CardBalance;
-import com.muxistudio.appcommon.data.CardData;
 import com.muxistudio.appcommon.data.ClassRoom;
 import com.muxistudio.appcommon.data.Config;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.CourseAdded;
 import com.muxistudio.appcommon.data.CourseAddedResponse;
-import com.muxistudio.appcommon.data.CourseId;
 import com.muxistudio.appcommon.data.CourseList;
 import com.muxistudio.appcommon.data.Detail;
-import com.muxistudio.appcommon.data.EleRequestData;
-import com.muxistudio.appcommon.data.Electricity;
+import com.muxistudio.appcommon.data.DormitoryList;
+import com.muxistudio.appcommon.data.ElectricityResponse;
 import com.muxistudio.appcommon.data.FeedBack;
-import com.muxistudio.appcommon.data.Hint;
 import com.muxistudio.appcommon.data.MapDetailList;
 import com.muxistudio.appcommon.data.Msg;
 import com.muxistudio.appcommon.data.News;
@@ -42,10 +39,7 @@ import com.muxistudio.appcommon.data.WebsiteData;
 import java.util.HashMap;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 import retrofit2.Response;
-import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -148,8 +142,11 @@ public interface RetrofitService {
     @GET("apartment/")
     Observable<List<ApartmentData>> getApartment();
 
-    @POST("ele/")
-    Observable<Response<Electricity>> getElectricity(@Body EleRequestData requestData);
+    @GET("ele/v2/dorms")
+    Observable<DormitoryList> getDormitory(@Query("building") String building);
+
+    @GET("ele/v2")
+    Observable<ElectricityResponse> getElectricity(@Query("building") String building, @Query("room") String room);
 
     //蹭课 搜索蹭课结果:
     @GET("lesson/")

@@ -1,5 +1,6 @@
 package net.muxi.huashiapp.ui.studyroom;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,7 @@ public class AreaOptionAdapter extends RecyclerView.Adapter<AreaOptionAdapter.My
     private OnItemClickListener mOnItemClickListener;
 
     public interface OnItemClickListener {
-        void OnItemClick(View view, String[] buildings,int position);
+        void OnItemClick(View view, String[] buildings, int position);
     }
 
     public AreaOptionAdapter(String[] buildings) {
@@ -35,17 +36,16 @@ public class AreaOptionAdapter extends RecyclerView.Adapter<AreaOptionAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyOptionViewHolder holder, int position) {
-        holder.mStudyAreaOption.setText(mbuildings[position]);
+    public void onBindViewHolder(@NonNull MyOptionViewHolder holder, int position) {
+        holder.mStudyAreaOption.setText(mbuildings[holder.getAdapterPosition()]);
         holder.mStudyAreaOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOnItemClickListener != null){
-                    mOnItemClickListener.OnItemClick(v,mbuildings,position);
+                if (mOnItemClickListener != null) {
+                    mOnItemClickListener.OnItemClick(v, mbuildings, holder.getAdapterPosition());
                 }
             }
         });
-
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AreaOptionAdapter extends RecyclerView.Adapter<AreaOptionAdapter.My
         return mbuildings.length;
     }
 
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
     }
 

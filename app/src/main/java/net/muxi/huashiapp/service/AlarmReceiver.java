@@ -11,8 +11,6 @@ import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.AttentionBook;
 import com.muxistudio.appcommon.data.BorrowedBook;
 import com.muxistudio.appcommon.data.CardBalance;
-import com.muxistudio.appcommon.data.CardDailyUse;
-import com.muxistudio.appcommon.data.CardDataEtp;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.data.User;
@@ -40,7 +38,6 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Observer;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;

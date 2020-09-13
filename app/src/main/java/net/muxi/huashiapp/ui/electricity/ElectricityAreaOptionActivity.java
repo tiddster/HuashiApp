@@ -21,6 +21,7 @@ public class ElectricityAreaOptionActivity extends ToolbarActivity {
 
 
     private String[] mBuildings;
+    private String[] buildings;
 
     private String area;
 
@@ -32,21 +33,42 @@ public class ElectricityAreaOptionActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_area);
         initView();
-        setTitle("选择楼栋");
-        mBuildings = getIntent().getStringArrayExtra("buildings");
-        mAdapter = new AreaOptionAdapter(mBuildings);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mAdapter.setOnItemClickListener(new AreaOptionAdapter.OnItemClickListener() {
-            @Override
-            public void OnItemClick(View view, String[] buildings, int position) {
-                area = buildings[position];
-                Intent intent = new Intent();
-                intent.putExtra("area", area);
-                setResult(0, intent);
-                ElectricityAreaOptionActivity.this.finish();
-            }
-        });
+        if (getIntent().getStringExtra("type").equals("area")) {
+            setTitle("选择楼栋");
+            mBuildings = getIntent().getStringArrayExtra("buildings");
+            buildings = mBuildings;
+            for (int i = 0; i < mBuildings.length; i++)
+                buildings[i] = mBuildings[i].split(" ")[0];
+            mAdapter = new AreaOptionAdapter(buildings);
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mAdapter.setOnItemClickListener(new AreaOptionAdapter.OnItemClickListener() {
+                @Override
+                public void OnItemClick(View view, String[] buildings, int position) {
+                    area = mBuildings[position];
+                    Intent intent = new Intent();
+                    intent.putExtra("area", area);
+                    setResult(0, intent);
+                    ElectricityAreaOptionActivity.this.finish();
+                }
+            });
+        } else {
+            setTitle("选择寝室");
+            mBuildings = getIntent().getStringArrayExtra("buildings");
+            mAdapter = new AreaOptionAdapter(mBuildings);
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            mAdapter.setOnItemClickListener(new AreaOptionAdapter.OnItemClickListener() {
+                @Override
+                public void OnItemClick(View view, String[] buildings, int position) {
+                    area = mBuildings[position];
+                    Intent intent = new Intent();
+                    intent.putExtra("room", area);
+                    setResult(0, intent);
+                    ElectricityAreaOptionActivity.this.finish();
+                }
+            });
+        }
     }
 
     @Override

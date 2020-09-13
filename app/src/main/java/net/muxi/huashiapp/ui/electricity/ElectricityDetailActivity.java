@@ -4,33 +4,26 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
-import com.muxistudio.appcommon.data.EleRequestData;
+import com.muxistudio.appcommon.data.ElectricityResponse;
 import com.muxistudio.appcommon.net.CampusFactory;
-import com.muxistudio.appcommon.utils.CommonTextUtils;
-import com.muxistudio.appcommon.widgets.LoadingDialog;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,10 +35,30 @@ import rx.schedulers.Schedulers;
 public class ElectricityDetailActivity extends ToolbarActivity {
 
     private RelativeLayout mEleDetailLayout;
-    private TabLayout mTabLayout;
     private MultiStatusView mMultiStatusView;
-    private ViewPager mViewPager;
     private TextView mPayHint;
+
+
+    private TextView mTvAirTime;
+    private TextView mTvLightTime;
+    private TextView mTvMoreTime;
+
+    private TextView mTvAirLeft;
+    private TextView mTvLightLeft;
+    private TextView mTvMoreLeft;
+
+    private TextView mTvAirUsage;
+    private TextView mTvLightUsage;
+    private TextView mTvMoreUsage;
+
+    private TextView mTvAirCharge;
+    private TextView mTvLightCharge;
+    private TextView mTvMoreCharge;
+
+    private CardView mCardAir;
+    private CardView mCardLight;
+    private CardView mCardMore;
+
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, ElectricityDetailActivity.class);
@@ -55,16 +68,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     private static final String PAY_HINT = "电费不足？查看如何微信缴费";
     private String mQuery;
-    private List<Fragment> detailFragments;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         initView();
+        showLoading("正在加载中");
         setTitle("查询结果");
-        init();
         PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
         mMultiStatusView.setOnRetryListener(v -> {
@@ -76,79 +87,53 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     }
 
     private void loadData() {
-        EleRequestData eleAirRequest = new EleRequestData();
-        eleAirRequest.setDor(mQuery);
-        eleAirRequest.setType("air");
-        EleRequestData eleLightRequest = new EleRequestData();
-        eleLightRequest.setDor(mQuery);
-        eleLightRequest.setType("light");
-        Subscription subscriptionEle = CampusFactory.getRetrofitService().getElectricity(eleLightRequest)
+        Subscription subscriptionEle = CampusFactory.getRetrofitService().getElectricity(mQuery.split(" ")[0], mQuery.split(" ")[1])
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(electricityResponse -> {
-                    if (electricityResponse.code() == 200) {
-//                        ((ElectricityDetailFragment) detailFragments.get(0)).setCardColor(0);
+                    if (electricityResponse.getCode() == 0) {
+                        setData(electricityResponse);
                         mMultiStatusView.showContent();
-                        ((ElectricityDetailFragment) detailFragments.get(0)).setEleDetail(electricityResponse.body());
                     }
-                    if (electricityResponse.code() == 503) {
-                        showSnackbarShort(getString(R.string.tip_school_server_error));
-                    }
-                    if (electricityResponse.code() == 500) {
-                        mMultiStatusView.showNetError();
-                        hideLoading();
-                    }
-                    //onError()
-                    //throwable 是里面的一个参数
                 }, throwable -> {
                     throwable.printStackTrace();
                     mMultiStatusView.showNetError();
                     hideLoading();
 
-                    //onComplete()
-                }, this::hideLoading);
-
-        Subscription subscriptionAir = CampusFactory.getRetrofitService().getElectricity(eleAirRequest)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(electricityResponse -> {
-                    if (electricityResponse.code() == 200) {
-//                            ((ElectricityDetailFragment) detailFragments.get(1)).setCardColor(1);
-                        mMultiStatusView.showContent();
-                        ((ElectricityDetailFragment) detailFragments.get(1)).setEleDetail(electricityResponse.body());
-                    }
-                    if (electricityResponse.code() == 500) {
-                        mMultiStatusView.showNetError();
-                        hideLoading();
-                    }
-                }, (Throwable throwable) -> {
-                    throwable.printStackTrace();
-                    mMultiStatusView.showNetError();
-                    hideLoading();
                 }, this::hideLoading);
     }
 
-    public void init() {
-        List<String> titles = new ArrayList<>();
-        titles.add("照明");
-        titles.add("空调");
-        for (int i = 0; i < 2; i++) {
-            mTabLayout.addTab(mTabLayout.newTab().setText(titles.get(i)));
+    public void setData(ElectricityResponse electricityResponse) {
+
+        mCardAir.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_one));
+        mCardLight.setCardBackgroundColor(getResources().getColor(R.color.color_card_light_one));
+        mCardMore.setCardBackgroundColor(getResources().getColor(R.color.color_card_air_two));
+
+        if ( electricityResponse.getData().isHas_more() ) {
+            mTvMoreLeft.setText(String.format("%s", electricityResponse.getData().getMore_data().get(0).getRemain_power()));
+            mTvMoreTime.setText(String.format("抄表时间：%s", electricityResponse.getData().getMore_data().get(0).getRead_time()));
+            mTvMoreUsage.setText(String.format("昨日用电：%s度", electricityResponse.getData().getMore_data().get(0).getConsumption().getUsage()));
+            mTvMoreCharge.setText(String.format("昨日电费：%s元", electricityResponse.getData().getMore_data().get(0).getConsumption().getCharge()));
+        } else
+            mCardMore.setVisibility(View.GONE);
+
+        if ( electricityResponse.getData().isHas_air() ) {
+            mTvAirLeft.setText(String.format("%s", electricityResponse.getData().getAir().getRemain_power()));
+            mTvAirTime.setText(String.format("抄表时间：%s", electricityResponse.getData().getAir().getRead_time()));
+            mTvAirUsage.setText(String.format("昨日用电：%s度", electricityResponse.getData().getAir().getConsumption().getUsage()));
+            mTvAirCharge.setText(String.format("昨日电费：%s元", electricityResponse.getData().getAir().getConsumption().getCharge()));
+        } else {
+
         }
 
-        detailFragments = new ArrayList<>();
-        detailFragments.add(ElectricityDetailFragment.newInstance(0));
-        detailFragments.add(ElectricityDetailFragment.newInstance(1));
+        if ( electricityResponse.getData().isHas_light() ) {
+            mTvLightLeft.setText(String.format("%s", electricityResponse.getData().getLight().getRemain_power()));
+            mTvLightTime.setText(String.format("抄表时间：%s", electricityResponse.getData().getLight().getRead_time()));
+            mTvLightUsage.setText(String.format("昨日用电：%s度", electricityResponse.getData().getLight().getConsumption().getUsage()));
+            mTvLightCharge.setText(String.format("昨日电费：%s元", electricityResponse.getData().getLight().getConsumption().getCharge()));
+        } else {
 
-
-        MyDetailAdapter myDetailAdapter = new MyDetailAdapter(getSupportFragmentManager(), detailFragments, titles);
-        mViewPager.setAdapter(myDetailAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);
-        mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        mTabLayout.setTabTextColors(getResources().getColor(R.color.color_normal_tab), getResources().getColor(R.color.colorAccent));
-        mTabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-        mTabLayout.setSelectedTabIndicatorColor(getResources().getColor(R.color.colorAccent));
-        mTabLayout.setTabMode(TabLayout.MODE_FIXED);
+        }
 
     }
 
@@ -205,10 +190,27 @@ public class ElectricityDetailActivity extends ToolbarActivity {
 
     private void initView() {
         mEleDetailLayout = findViewById(R.id.ele_detail_layout);
-        AppBarLayout mAppBar = findViewById(R.id.app_bar);
-        mTabLayout = findViewById(R.id.tabLayout);
         mMultiStatusView = findViewById(R.id.multi_status_view);
-        mViewPager = findViewById(R.id.viewPager);
+
+        mCardAir = findViewById(R.id.card_air);
+        mCardLight = findViewById(R.id.card_light);
+        mCardMore = findViewById(R.id.card_more);
+
+        mTvAirTime = findViewById(R.id.tv_air_time);
+        mTvAirLeft = findViewById(R.id.tv_air_left);
+        mTvAirUsage = findViewById(R.id.tv_air_usage);
+        mTvAirCharge = findViewById(R.id.tv_air_charge);
+
+        mTvLightTime = findViewById(R.id.tv_light_time);
+        mTvLightLeft = findViewById(R.id.tv_light_left);
+        mTvLightUsage = findViewById(R.id.tv_light_usage);
+        mTvLightCharge = findViewById(R.id.tv_light_charge);
+
+        mTvMoreTime = findViewById(R.id.tv_more_time);
+        mTvMoreLeft = findViewById(R.id.tv_more_left);
+        mTvMoreUsage = findViewById(R.id.tv_more_usage);
+        mTvMoreCharge = findViewById(R.id.tv_more_charge);
+
         mPayHint = findViewById(R.id.pay_hint);
         mPayHint.setOnClickListener(v -> onClick());
     }

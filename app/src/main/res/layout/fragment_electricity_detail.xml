@@ -1,279 +1,324 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:fillViewport="true"
     android:scrollbars="none">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        >
+        android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_money_left"
+            android:id="@+id/card_air"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
+            android:layout_height="110dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginRight="@dimen/activity_horizontal_margin"
             app:cardCornerRadius="4dp"
-            app:cardElevation="0dp"
-            >
+            app:cardElevation="0dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="54dp"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-                <TextView
-                    android:id="@+id/tv_money_sign"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_air_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="空调"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_air_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tv_air_sign"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        tools:text="抄表时间：2020-08-21 02:49:24" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:text="¥"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="32sp"
-                    />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/tv_money_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/tv_money_sign"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="32sp"
-                    tools:text="40.66"
-                    />
+                    <TextView
+                        android:id="@+id/tv_air_left_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="剩余: "
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_money_sign"
-                    android:text="剩余金额"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"/>
+                    <TextView
+                        android:id="@+id/tv_air_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="313.93"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="32sp" />
+                    <TextView
+                        android:id="@+id/tv_air_left_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="度"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="25sp" />
+                </LinearLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_air_usage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="昨日用电：0.06度"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp" />
 
+                    <TextView
+                        android:id="@+id/tv_air_charge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tv_air_usage"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        tools:text="昨日电费：0.04元" />
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_degree_left"
+            android:id="@+id/card_light"
             android:layout_width="match_parent"
-            android:layout_height="92dp"
-            android:layout_below="@+id/card_money_left"
+            android:layout_height="110dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
             app:cardCornerRadius="4dp"
-            app:cardElevation="0dp"
-            >
+            app:cardElevation="0dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="54dp"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/tv_degree_left"
-                    android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/tv_light_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="照明"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/tv_light_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tv_light_sign"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        tools:text="抄表时间：2020-08-21 02:49:24" />
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/title_ec_left"
-                    android:layout_alignParentTop="true"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="32sp"
-                    tools:text="336.54"
-                    />
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/title_ec_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_degree_left"
-                    android:text="剩余电量"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="14sp"
-                    />
+                    <TextView
+                        android:id="@+id/tv_light_left_sign"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="剩余: "
+                        android:textColor="@color/colorWhite"
+                        android:textSize="15sp" />
 
-            </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tv_light_left"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="313.9"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="32sp" />
+                    <TextView
+                        android:id="@+id/tv_light_left_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="度"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="25sp" />
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tv_light_usage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:text="昨日用电：0.06度"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_light_charge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/tv_light_usage"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="12sp"
+                        tools:text="昨日电费：0.04元" />
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card_total_use"
+            android:id="@+id/card_more"
             android:layout_width="match_parent"
-            android:layout_height="152dp"
+            android:layout_height="110dp"
             android:layout_below="@+id/card_degree_left"
-            android:layout_marginBottom="8dp"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
             android:layout_marginTop="8dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="8dp"
             app:cardCornerRadius="4dp"
-            app:cardElevation="0dp"
-            >
+            app:cardElevation="0dp">
 
-            <RelativeLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                android:paddingLeft="54dp"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                >
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
 
-
-                <TextView
-                    android:id="@+id/tv_money_sign3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="¥"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/layout"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@id/tv_money_sign3"
-                    android:paddingRight="14dp">
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_degree_cur_month"
+                        android:id="@+id/tv_more_sign"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentStart="true"
+                        android:text="客厅空调"
                         android:textColor="@color/colorWhite"
-                        android:textSize="26sp"
-                        tools:text="22.67"
-                        />
-
+                        android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/tv_money_cur_month"
+                        android:id="@+id/tv_more_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignTop="@id/tv_more_sign"
+                        android:layout_alignParentEnd="true"
                         android:textColor="@color/colorWhite"
-                        android:textSize="26sp"
-                        tools:text="15.66"
-                        />
-                </LinearLayout>
+                        android:textSize="12sp"
+                        tools:text="抄表时间：2020-08-21 02:49:24" />
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/layout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/layout">
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_more_left_sign"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="当月电费"
+                        android:text="剩余: "
                         android:textColor="@color/colorWhite"
-                        android:textSize="14sp"
-                        />
+                        android:textSize="15sp" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_more_left"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="当月度数"
+                        android:gravity="center"
+                        android:text="313.93(度)"
                         android:textColor="@color/colorWhite"
-                        android:textSize="14sp"
-                        />
+                        android:textSize="32sp" />
 
-
+                    <TextView
+                        android:id="@+id/tv_more_left_unit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="度"
+                        android:textColor="@color/colorWhite"
+                        android:textSize="25sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_money_sign2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/layout3"
-                    android:layout_below="@id/layout2"
-                    android:text="¥"
-                    android:textColor="@color/colorWhite"
-                    android:textSize="26sp"
-                    />
-
-                <LinearLayout
-                    android:id="@+id/layout3"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/layout4"
-                    android:layout_toRightOf="@id/tv_money_sign2"
-                    android:paddingRight="14dp">
-
+                    android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/tv_degree_last_month"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_more_usage"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignParentStart="true"
+                        android:text="昨日用电：0.06度"
                         android:textColor="@color/colorWhite"
-                        android:textSize="26sp"
-                        tools:text="91.96"/>
-
+                        android:textSize="12sp" />
 
                     <TextView
-                        android:id="@+id/tv_money_last_month"
-                        android:layout_width="match_parent"
+                        android:id="@+id/tv_more_charge"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_alignTop="@id/tv_more_usage"
+                        android:layout_alignParentEnd="true"
                         android:textColor="@color/colorWhite"
-                        android:textSize="26sp"
-                        tools:text="30.66"
-                        />
+                        android:textSize="12sp"
+                        tools:text="昨日电费：0.04元" />
+                </RelativeLayout>
 
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:id="@+id/layout4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="上月电费"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="14sp"
-                        />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="上月度数"
-                        android:textColor="@color/colorWhite"
-                        android:textSize="14sp"
-                        />
-
-
-                </LinearLayout>
-
-
-            </RelativeLayout>
+            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </ScrollView>
