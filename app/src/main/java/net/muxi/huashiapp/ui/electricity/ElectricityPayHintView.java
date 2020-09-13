@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
@@ -40,7 +41,7 @@ public class ElectricityPayHintView extends RelativeLayout {
   private ImageView mViewCloseBtn;
   private TextView mTvTitle;
   private TextView mTvContent;
-  private RelativeLayout mRelativeLayout;
+  private LinearLayout mLinearLayout;
   private TextView mTvName;
   private TextView mTvCopy;
 
@@ -57,7 +58,7 @@ public class ElectricityPayHintView extends RelativeLayout {
       mViewCloseBtn = findViewById(R.id.view_close_btn);
       mTvTitle = findViewById(R.id.tv_title);
       mTvContent = findViewById(R.id.tv_content);
-      mRelativeLayout = findViewById(R.id.relative_layout);
+      mLinearLayout = findViewById(R.id.relative_layout);
       mTvName = findViewById(R.id.tv_name);
       mTvCopy = findViewById(R.id.tv_copy);
       mViewCloseBtn.setOnClickListener(v -> onClick(v));
