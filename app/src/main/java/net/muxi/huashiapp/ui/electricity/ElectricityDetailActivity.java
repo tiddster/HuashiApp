@@ -8,6 +8,7 @@ import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -54,6 +55,14 @@ public class ElectricityDetailActivity extends ToolbarActivity {
     private TextView mTvAirCharge;
     private TextView mTvLightCharge;
     private TextView mTvMoreCharge;
+
+    private TextView mTvAirLeftSign;
+    private TextView mTvLightLeftSign;
+    private TextView mTvMoreLeftSign;
+
+    private TextView mTvAirLeftUnit;
+    private TextView mTvLightLeftUnit;
+    private TextView mTvMoreLeftUnit;
 
     private CardView mCardAir;
     private CardView mCardLight;
@@ -123,7 +132,17 @@ public class ElectricityDetailActivity extends ToolbarActivity {
             mTvAirUsage.setText(String.format("昨日用电：%s度", electricityResponse.getData().getAir().getConsumption().getUsage()));
             mTvAirCharge.setText(String.format("昨日电费：%s元", electricityResponse.getData().getAir().getConsumption().getCharge()));
         } else {
-
+            mTvAirLeft.setText("");
+            mTvAirTime.setText("");
+            mTvAirUsage.setText("");
+            mTvAirCharge.setText("");
+            mTvAirLeftUnit.setText("");
+            mTvAirLeftUnit.setVisibility(View.INVISIBLE);
+            mTvAirLeft.setVisibility(View.INVISIBLE);
+            mTvAirTime.setVisibility(View.INVISIBLE);
+            mTvAirUsage.setVisibility(View.INVISIBLE);
+            mTvAirCharge.setVisibility(View.INVISIBLE);
+            mTvAirLeftSign.setText("暂时查询不到");
         }
 
         if ( electricityResponse.getData().isHas_light() ) {
@@ -132,7 +151,18 @@ public class ElectricityDetailActivity extends ToolbarActivity {
             mTvLightUsage.setText(String.format("昨日用电：%s度", electricityResponse.getData().getLight().getConsumption().getUsage()));
             mTvLightCharge.setText(String.format("昨日电费：%s元", electricityResponse.getData().getLight().getConsumption().getCharge()));
         } else {
+            mTvLightLeft.setText("");
+            mTvLightTime.setText("");
+            mTvLightUsage.setText("");
+            mTvLightCharge.setText("");
+            mTvLightLeftUnit.setText("");
+            mTvLightLeftUnit.setVisibility(View.INVISIBLE);
+            mTvLightLeft.setVisibility(View.INVISIBLE);
+            mTvLightTime.setVisibility(View.INVISIBLE);
+            mTvLightUsage.setVisibility(View.INVISIBLE);
+            mTvLightCharge.setVisibility(View.INVISIBLE);
 
+            mTvLightLeftSign.setText("暂时查询不到");
         }
 
     }
@@ -200,16 +230,22 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         mTvAirLeft = findViewById(R.id.tv_air_left);
         mTvAirUsage = findViewById(R.id.tv_air_usage);
         mTvAirCharge = findViewById(R.id.tv_air_charge);
+        mTvAirLeftSign = findViewById(R.id.tv_air_left_sign);
+        mTvAirLeftUnit = findViewById(R.id.tv_air_left_unit);
 
         mTvLightTime = findViewById(R.id.tv_light_time);
         mTvLightLeft = findViewById(R.id.tv_light_left);
         mTvLightUsage = findViewById(R.id.tv_light_usage);
         mTvLightCharge = findViewById(R.id.tv_light_charge);
+        mTvLightLeftSign = findViewById(R.id.tv_light_left_sign);
+        mTvLightLeftUnit = findViewById(R.id.tv_light_left_unit);
 
         mTvMoreTime = findViewById(R.id.tv_more_time);
         mTvMoreLeft = findViewById(R.id.tv_more_left);
         mTvMoreUsage = findViewById(R.id.tv_more_usage);
         mTvMoreCharge = findViewById(R.id.tv_more_charge);
+        mTvMoreLeftSign = findViewById(R.id.tv_more_left_sign);
+        mTvMoreLeftUnit = findViewById(R.id.tv_more_left_unit);
 
         mPayHint = findViewById(R.id.pay_hint);
         mPayHint.setOnClickListener(v -> onClick());

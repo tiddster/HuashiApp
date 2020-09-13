@@ -22,18 +22,21 @@
         android:layout_centerHorizontal="true"/>
 
 
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:id="@+id/tv_confirm_query"
-            android:layout_below="@+id/iv_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tip_confirm_query"
-            android:textColor="#C6D2DE"
-            android:textSize="16sp"/>
+    <TextView
+        android:id="@+id/tv_confirm_query"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_error"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-2dp"
+        android:visibility="gone"
+        android:text="@string/tip_confirm_query"
+        android:textColor="#C6D2DE"
+        android:textSize="16sp" />
 
-        <TextView
+    <TextView
             android:id="@+id/view_retry"
+        android:visibility="gone"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
             android:layout_width="wrap_content"

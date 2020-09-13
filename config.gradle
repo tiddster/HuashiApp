@@ -6,7 +6,7 @@ ext {
 
     versionMajor = 2
     versionMinor = 5
-    versionBuild = 8
+    versionBuild = 9
 
 
     android = [compileSdkVersion: 27,

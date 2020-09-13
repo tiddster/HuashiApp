@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.NoDoubleClickUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
@@ -35,8 +36,6 @@ public class ElectricityActivity extends ToolbarActivity {
     private TextView mHintChooseRoom;
     private TextView mTvRoom;
     private Button mBtnSearch;
-
-    private Map<String, String> mBuildings1, mBuildings2, mBuildings3, mBuildings4, mBuildings5;
 
     public static void start(Context context) {
         Intent starter = new Intent(context, ElectricityActivity.class);
@@ -112,7 +111,7 @@ public class ElectricityActivity extends ToolbarActivity {
 
         mArea1.setBackgroundResource(R.drawable.shape_green);
         mArea1.setTextColor(Color.WHITE);
-        mTvArea.setText("东区2栋");
+        mTvArea.setText("东区1栋");
         mBuildings = buildingStrings1;
 
     }
@@ -121,7 +120,7 @@ public class ElectricityActivity extends ToolbarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             switch (requestCode) {
-                case 0 :
+                case 0:
                     mTvArea.setText(data.getStringExtra("area"));
                     break;
                 case 1:
@@ -136,41 +135,44 @@ public class ElectricityActivity extends ToolbarActivity {
         int id = view.getId();
         if (id == R.id.area_1) {
             setBackground(0);
+            mTvArea.setText("东区1栋");
             mBuildings = buildingStrings1;
         } else if (id == R.id.area_2) {
             setBackground(1);
+            mTvArea.setText("西区1栋");
             mBuildings = buildingStrings2;
         } else if (id == R.id.area_3) {
             setBackground(2);
+            mTvArea.setText("元宝山1栋");
             mBuildings = buildingStrings3;
         } else if (id == R.id.area_4) {
             setBackground(3);
+            mTvArea.setText("南湖1栋");
             mBuildings = buildingStrings4;
         } else if (id == R.id.area_5) {
             setBackground(4);
+            mTvArea.setText("国交4栋");
             mBuildings = buildingStrings5;
-        }
-
-        else if (id == R.id.tv_area || id == R.id.hint_choose_area) {
+        } else if ((id == R.id.tv_area || id == R.id.hint_choose_area) && !NoDoubleClickUtil.isDoubleClick()) {
             //选择所在区域具体的寝室号码
             Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
             intent.putExtra("type", "area");
             intent.putExtra("buildings", mBuildings);
             startActivityForResult(intent, 0);
-        } else if (id == R.id.tv_room || id == R.id.hint_choose_room) {
+        } else if ((id == R.id.tv_room || id == R.id.hint_choose_room) && !NoDoubleClickUtil.isDoubleClick()) {
             //选择所在楼栋具体寝室号
             Intent intent = new Intent(ElectricityActivity.this, ElectricityAreaOptionActivity.class);
             intent.putExtra("type", "room");
-            if ( getAlias() != null )
+            if (getAlias() != null)
                 CampusFactory.getRetrofitService().getDormitory(getAlias())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(dormitoryList -> {
                             String[] buildingList = new String[dormitoryList.getData().getCount()];
-                            for ( int i = 0 ; i < dormitoryList.getData().getCount() ; i++ )
+                            for (int i = 0; i < dormitoryList.getData().getCount(); i++)
                                 buildingList[i] = dormitoryList.getData().getList().get(i);
-                               intent.putExtra("buildings", buildingList);
-                            }, throwable -> {
+                            intent.putExtra("buildings", buildingList);
+                        }, throwable -> {
                             showErrorSnackbarShort("请检查网络");
                             throwable.printStackTrace();
                         }, () -> {
@@ -193,30 +195,31 @@ public class ElectricityActivity extends ToolbarActivity {
     }
 
     private String getAlias() {
-        if ( mTvArea.getText().length() != 0 ) {
+        if (mTvArea.getText().length() != 0) {
             String area = mTvArea.getText().toString();
             StringBuffer alias = new StringBuffer();
-            if ( area.charAt(0) == '东') {
+            if (area.charAt(0) == '东') {
                 alias.append('东');
-                if ( area.charAt(2) > '9' || area.charAt(2) < '0' ) {
+                if (area.charAt(2) > '9' || area.charAt(2) < '0') {
                     alias.append('附');
+                    alias.append(area, 3, area.indexOf("栋"));
                 } else {
                     int index = area.indexOf("栋");
                     alias.append(area, 2, index);
-                    if ( index + 1 < area.length() ) {
+                    if (index + 1 < area.length()) {
                         alias.append("-");
-                        alias.append(area.charAt(area.length()-1));
+                        alias.append(area.charAt(area.length() - 1));
                     }
                 }
-            } else if ( area.charAt(0) == '西' ) {
+            } else if (area.charAt(0) == '西') {
                 alias.append('西');
                 alias.append(area, 2, area.indexOf("栋"));
-            } else if ( area.charAt(0) == '南' ) {
-                alias.append(area, 0, area.length()-1);
-            } else if ( area.charAt(0) == '国' ) {
+            } else if (area.charAt(0) == '南') {
+                alias.append(area, 0, area.length() - 1);
+            } else if (area.charAt(0) == '国') {
                 alias.append('国');
                 alias.append(area, 2, area.indexOf("栋"));
-            } else if ( area.charAt(0) == '元' ) {
+            } else if (area.charAt(0) == '元') {
                 alias.append('元');
                 alias.append(area, 3, area.indexOf("栋"));
             }
