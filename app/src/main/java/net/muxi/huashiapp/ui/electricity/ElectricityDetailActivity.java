@@ -8,7 +8,6 @@ import android.support.v7.widget.CardView;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,6 @@ import com.umeng.analytics.MobclickAgent;
 
 import net.muxi.huashiapp.R;
 
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -83,20 +81,17 @@ public class ElectricityDetailActivity extends ToolbarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_electricity_detail);
         initView();
-        showLoading("正在加载中");
+        showLoading("正在查询中");
         setTitle("查询结果");
-        PreferenceUtil sp = new PreferenceUtil();
         mQuery = getIntent().getStringExtra("query");
-        mMultiStatusView.setOnRetryListener(v -> {
-            loadData();
-        });
+        mMultiStatusView.setOnRetryListener(v -> loadData());
         setFontType(PAY_HINT);
         loadData();
 
     }
 
     private void loadData() {
-        Subscription subscriptionEle = CampusFactory.getRetrofitService().getElectricity(mQuery.split(" ")[0], mQuery.split(" ")[1])
+        CampusFactory.getRetrofitService().getElectricity(mQuery.split(" ")[0], mQuery.split(" ")[1])
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(electricityResponse -> {
