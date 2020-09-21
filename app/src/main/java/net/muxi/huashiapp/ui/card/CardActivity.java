@@ -144,7 +144,7 @@ public class CardActivity extends ToolbarActivity implements ICardView {
 
         List<CardSumData> data = new ArrayList<>();
         for (int i = 0; i < 15; i++)
-            data.add(new CardSumData(DateUtil.getTheDateInYear(new Date(), i - 14).substring(5,10), getDailySum(dailyUse, i)));
+            data.add(new CardSumData(DateUtil.getTheDateInYear(new Date(), i - 14), getDailySum(dailyUse, i)));
 
         mChartFragment.setData(data);
 

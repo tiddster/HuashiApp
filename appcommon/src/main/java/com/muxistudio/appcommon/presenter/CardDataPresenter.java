@@ -43,7 +43,7 @@ public class CardDataPresenter {
                         Date today = calendar.getTime();
                         String todayDays = DateUtil.toDateInYear(today);
 
-                        CampusFactory.getRetrofitService().getCardAccount("300", "1", "2018-09-01", todayDays)
+                        CampusFactory.getRetrofitService().getCardAccount("100", "1", DateUtil.getTheDateInYear(new Date(), -30), todayDays)
                                 .subscribeOn(Schedulers.io())
                                 .observeOn(AndroidSchedulers.mainThread())
                                 .subscribe(new Observer<CardAccount>() {

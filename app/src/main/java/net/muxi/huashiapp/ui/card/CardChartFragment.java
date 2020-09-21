@@ -64,7 +64,7 @@ public class CardChartFragment extends Fragment {
         mChart.getXAxis().setValueFormatter(new ValueFormatter() {
             @Override
             public String getAxisLabel(float value, AxisBase axis) {
-                return data.get((int) value).time;
+                return data.get((int) value).time.substring(5, 10);
             }
         });
 
