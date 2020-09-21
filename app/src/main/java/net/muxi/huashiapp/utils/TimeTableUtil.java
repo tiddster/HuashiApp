@@ -179,7 +179,7 @@ public class TimeTableUtil {
                return 1;
            }
            try {
-               int dis=getDistanceWeek(startTime,cur);
+               int dis=(int)getDistanceWeek(startTime,cur);
                return dis+1;
            }catch (ParseException e){
                return 1;
@@ -188,17 +188,13 @@ public class TimeTableUtil {
        }else {
            String startTime=PreferenceUtil.getString(PreferenceUtil.SELECTED_WEEK_DATE,"NULL");
            try {
-               int dis=getDistanceWeek(startTime,cur);
+               int dis=(int)getDistanceWeek(startTime,cur);
                return selectWeek+dis;
            }catch (ParseException e) {
                e.printStackTrace();
                return 1;
            }
-
-
        }
-
-
     }
 
 
@@ -209,7 +205,7 @@ public class TimeTableUtil {
      * @return 相隔的周数
      * @throws ParseException
      */
-    public static int getDistanceWeek(String start, String end) throws ParseException {
+    public static long getDistanceWeek(String start, String end) throws ParseException {
         int[][] convert = {{1,2,3,4,5,6,7},{7,1,2,3,4,5,6}};
 
         DateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
@@ -222,15 +218,13 @@ public class TimeTableUtil {
         int weekDay1 = calendar1.get(Calendar.DAY_OF_WEEK);
         date1.setTime(date1.getTime()-(convert[1][weekDay1-1]-1)*1000 * 60 * 60 * 24);
 
-
-
         Calendar calendar2 = Calendar.getInstance();
         calendar2.setFirstDayOfWeek(Calendar.MONDAY);
         calendar2.setTime(date2);
         int weekDay2 = calendar2.get(Calendar.DAY_OF_WEEK);
         date2.setTime(date2.getTime()-(convert[1][weekDay2-1]-1)*1000 * 60 * 60 * 24);
 
-        return (int)(date2.getTime()-date1.getTime()) / (1000 * 60 * 60 * 24) /7;
+        return (date2.getTime()-date1.getTime()) / (1000 * 60 * 60 * 24) /7;
 
     }
   /**
