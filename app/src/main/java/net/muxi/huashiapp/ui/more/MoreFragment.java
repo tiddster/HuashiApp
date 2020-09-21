@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,16 +116,26 @@ public class MoreFragment extends BaseAppFragment {
 
     }
 
+    private boolean ifVersionLatest(String version) {
+        String[] versions = version.split("\\.");
+        String[] now = BuildConfig.VERSION_NAME.split("\\.");
+        for(int i = 0 ; i < 3 ; i++) {
+            if ( Integer.parseInt(versions[i]) >= Integer.parseInt(now[i]) )
+                return true;
+        }
+        return false;
+    }
+
     private void checkUpdates() {
         CampusFactory.getRetrofitService().getLatestVersion()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(versionData -> {
-                    if (versionData == null){
+                    if (versionData == null) {
                         ((BaseAppActivity)getActivity()).showSnackbarShort(R.string.title_not_have_to_update);
                         return;
                     }
-                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME) && Integer.parseInt(versionData.getVersion().split(".")[2]) > Integer.parseInt(BuildConfig.VERSION_NAME.split(".")[2])) {
+                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME) && !ifVersionLatest(versionData.getVersion())) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update)
                                 + versionData.getVersion());

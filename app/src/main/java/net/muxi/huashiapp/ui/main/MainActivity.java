@@ -123,6 +123,15 @@ public class MainActivity extends BaseAppActivity implements
 
     }
 
+    private boolean ifVersionLatest(String version) {
+        String[] versions = version.split("\\.");
+        String[] now = BuildConfig.VERSION_NAME.split("\\.");
+        for(int i = 0 ; i < 3 ; i++) {
+            if ( Integer.parseInt(versions[i]) >= Integer.parseInt(now[i]) )
+                return true;
+        }
+        return false;
+    }
 
     private void checkNewVersion() {
         CampusFactory.getRetrofitService().getLatestVersion()
@@ -132,7 +141,7 @@ public class MainActivity extends BaseAppActivity implements
                     if (versionData == null){
                         return;
                     }
-                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME) && Integer.parseInt(versionData.getVersion().split(".")[2]) > Integer.parseInt(BuildConfig.VERSION_NAME.split(".")[2])) {
+                    if (!versionData.getVersion().equals(BuildConfig.VERSION_NAME) && !ifVersionLatest(versionData.getVersion())) {
                         final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
                         checkUpdateDialog.setTitle(App.sContext.getString(R.string.title_update) + versionData.getVersion());
                         checkUpdateDialog.setContent(
