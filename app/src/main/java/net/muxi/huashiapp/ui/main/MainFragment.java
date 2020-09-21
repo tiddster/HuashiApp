@@ -203,7 +203,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
                             break;
                         case "电费":
                             String eleQuery = PreferenceUtil.getString(PreferenceUtil.ELE_QUERY_STRING);
-                            if (eleQuery.equals("")) {
+                            if (eleQuery.equals("") || !eleQuery.contains(" ") ) {
                                 ElectricityActivity.start(getActivity());
                             } else {
                                 ElectricityDetailActivity.start(getActivity(), eleQuery);
