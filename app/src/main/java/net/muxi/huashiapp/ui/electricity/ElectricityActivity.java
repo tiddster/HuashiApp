@@ -122,6 +122,7 @@ public class ElectricityActivity extends ToolbarActivity {
             switch (requestCode) {
                 case 0:
                     mTvArea.setText(data.getStringExtra("area"));
+                    mTvRoom.setText("");
                     break;
                 case 1:
                     mTvRoom.setText(data.getStringExtra("room"));
@@ -136,22 +137,27 @@ public class ElectricityActivity extends ToolbarActivity {
         if (id == R.id.area_1) {
             setBackground(0);
             mTvArea.setText("东区1栋");
+            mTvRoom.setText("");
             mBuildings = buildingStrings1;
         } else if (id == R.id.area_2) {
             setBackground(1);
             mTvArea.setText("西区1栋");
+            mTvRoom.setText("");
             mBuildings = buildingStrings2;
         } else if (id == R.id.area_3) {
             setBackground(2);
             mTvArea.setText("元宝山1栋");
+            mTvRoom.setText("");
             mBuildings = buildingStrings3;
         } else if (id == R.id.area_4) {
             setBackground(3);
             mTvArea.setText("南湖1栋");
+            mTvRoom.setText("");
             mBuildings = buildingStrings4;
         } else if (id == R.id.area_5) {
             setBackground(4);
             mTvArea.setText("国交4栋");
+            mTvRoom.setText("");
             mBuildings = buildingStrings5;
         } else if ((id == R.id.tv_area || id == R.id.hint_choose_area) && !NoDoubleClickUtil.isDoubleClick()) {
             //选择所在区域具体的寝室号码
