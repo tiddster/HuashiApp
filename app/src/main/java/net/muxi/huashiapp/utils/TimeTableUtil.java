@@ -259,10 +259,7 @@ public class TimeTableUtil {
         for (int i = 0; i < allCourseList.size(); i++) {
             String weeks = Course.listToString(allCourseList.get(i).getWeeks());
             String day = allCourseList.get(i).getDay();
-            if (isThisWeek(getCurWeek(), weeks)&& day.equals(
-                    Constants.WEEKDAYS_XQ[
-                            DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))
-                                    - 1])) {
+            if (isThisWeek(getCurWeek(), weeks)&& day.equals(DateUtil.getDayInWeek(new Date(System.currentTimeMillis()))+"")) {
                 courseList.add(allCourseList.get(i));
             }
         }
