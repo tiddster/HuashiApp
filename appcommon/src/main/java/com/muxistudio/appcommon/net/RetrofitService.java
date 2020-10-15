@@ -175,10 +175,9 @@ public interface RetrofitService {
     @GET("site/")
     Observable<List<WebsiteData>> getWebsite();
 
-    @GET("classroom/get_classroom/")
-    Observable<ClassRoom> getClassRoom(@Query("weekno") String week,
-                                       @Query("weekday") String day,
-
+    @GET("classroom/v2")
+    Observable<ClassRoom> getClassRoom(@Query("week") String week,
+                                       @Query("day") String day,
                                        @Query("building") String area);
 
     /**

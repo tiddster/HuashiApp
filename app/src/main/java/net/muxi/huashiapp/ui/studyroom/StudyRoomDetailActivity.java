@@ -23,6 +23,8 @@ import com.muxistudio.multistatusview.MultiStatusView;
 
 import net.muxi.huashiapp.R;
 
+import java.util.List;
+
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -36,20 +38,34 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private ClassRoom mClassRoom;
     private RelativeLayout mStudyDetailLayout;
     private MultiStatusView mMultiStatusView;
-    private TextView mTitleStudyRoomEight;
-    private GridLayout mGridClassroomEight;
-    private TextView mTitleStudyRoomTen;
-    private GridLayout mGridClassroomTen;
-    private TextView mTitleStudyRoomTwelve;
-    private GridLayout mGridClassroomTwelve;
-    private TextView mTitleStudyRoomFourteen;
-    private GridLayout mGridClassroomFourteen;
-    private TextView mTitleStudyRoomSixteen;
-    private GridLayout mGridClassroomSixteen;
-    private TextView mTitleStudyRoomEighteen;
-    private GridLayout mGridClassroomEighteen;
-    private TextView mTitleStudyRoomTwenty;
-    private GridLayout mGridClassroomTwenty;
+    private TextView mTitleStudyRoom1;
+    private GridLayout mGridClassroom1;
+    private TextView mTitleStudyRoom2;
+    private GridLayout mGridClassroom2;
+    private TextView mTitleStudyRoom3;
+    private GridLayout mGridClassroom3;
+    private TextView mTitleStudyRoom4;
+    private GridLayout mGridClassroom4;
+    private TextView mTitleStudyRoom5;
+    private GridLayout mGridClassroom5;
+    private TextView mTitleStudyRoom6;
+    private GridLayout mGridClassroom6;
+    private TextView mTitleStudyRoom7;
+    private GridLayout mGridClassroom7;
+    private TextView mTitleStudyRoom8;
+    private GridLayout mGridClassroom8;
+    private TextView mTitleStudyRoom9;
+    private GridLayout mGridClassroom9;
+    private TextView mTitleStudyRoom10;
+    private GridLayout mGridClassroom10;
+    private TextView mTitleStudyRoom11;
+    private GridLayout mGridClassroom11;
+    private TextView mTitleStudyRoom12;
+    private GridLayout mGridClassroom12;
+    private GridLayout[] mGridClassrooms;
+    private TextView[] mTitleStudyRooms = new TextView[]{mTitleStudyRoom1, mTitleStudyRoom2,
+            mTitleStudyRoom3, mTitleStudyRoom4, mTitleStudyRoom5, mTitleStudyRoom6, mTitleStudyRoom7,
+            mTitleStudyRoom8, mTitleStudyRoom9, mTitleStudyRoom10, mTitleStudyRoom11, mTitleStudyRoom12};
 
     public static void start(Context context, String query) {
         Intent starter = new Intent(context, StudyRoomDetailActivity.class);
@@ -82,8 +98,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private void loadData() {
         LoadingDialog loadingDialog = showLoading("正在请求空闲教室数据ing~");
         Subscription subscription = CampusFactory.getRetrofitService()
-                .getClassRoom(getWeek(mQuery), getDayValue(mQuery)
-                        , getBuidingValue(mQuery))
+                .getClassRoom(getWeek(mQuery), getDayValue(mQuery), getBuidingValue(mQuery))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(classRoom -> {
@@ -95,9 +110,7 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
                     throwable.printStackTrace();
                     mMultiStatusView.showNetError();
                     hideLoading();
-                }, () -> {
-                    hideLoading();
-                });
+                }, () -> hideLoading());
 
         loadingDialog.setOnSubscriptionCanceledListener(()->{
           if(!subscription.isUnsubscribed())
@@ -111,149 +124,34 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private void setNull() {
         img = new ImageView(this);
         img.setImageResource(R.drawable.img_empty_classroom);
-        if (mClassRoom.getValue1() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomEight.addView(img, params);
-        }
-        if (mClassRoom.getValue3() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomTen.addView(img, params);
-        }
-        if (mClassRoom.getValue5() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomTwelve.addView(img, params);
-        }
-        if (mClassRoom.getValue7() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomFourteen.addView(img, params);
-        }
-        if (mClassRoom.getValue9() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomSixteen.addView(img, params);
-        }
-        if (mClassRoom.getValue11() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomEighteen.addView(img, params);
-        }
-        if (mClassRoom.getValue13() == null) {
-            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-            params.leftMargin = DimensUtil.dp2px(94f);
-            mGridClassroomTwenty.addView(img, params);
+        for ( int i = 0; i < mClassRoom.getData().getList().size(); i++) {
+            List<String> rooms = mClassRoom.getData().getList().get(i).getRooms();
+            if ( rooms == null || rooms.size() == 0 ){
+                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+                params.leftMargin = DimensUtil.dp2px(94f);
+                mGridClassrooms[i].addView(img, params);
+            }
         }
     }
 
 
     private void setData() {
-        if (mClassRoom.getValue1() != null) {
-            mGridClassroomEight.setRowCount(30);
-            mGridClassroomEight.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue1().size(); i++) {
-                TextView context1 = new TextView(this);
-                context1.setTextColor(getResources().getColor(R.color.colorBlack));
-                context1.setText(mClassRoom.getValue1().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomEight.addView(context1, params);
+
+        for ( int i = 0 ; i < mClassRoom.getData().getList().size(); i++ ) {
+            List<String> rooms = mClassRoom.getData().getList().get(i).getRooms();
+            if ( rooms != null && rooms.size() > 0) {
+                mGridClassrooms[i].setRowCount(30);
+                mGridClassrooms[i].setColumnCount(4);
             }
-
-
-        }
-
-        if (mClassRoom.getValue3() != null) {
-            mGridClassroomTen.setRowCount(30);
-            mGridClassroomTen.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue3().size(); i++) {
-                TextView context2 = new TextView(this);
-                context2.setTextColor(getResources().getColor(R.color.colorBlack));
-                context2.setText(mClassRoom.getValue3().get(i));
+            assert rooms != null;
+            for (String room :rooms) {
+                TextView context = new TextView(this);
+                context.setTextColor(getResources().getColor(R.color.colorBlack));
+                context.setText(room);
                 GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-//                params.rightMargin = mGridClassroomEight.getWidth() / 5;
+                params.width = 2 * mGridClassrooms[i].getWidth() / 7;
                 params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomTen.addView(context2, params);
-            }
-        }
-
-        if (mClassRoom.getValue5() != null) {
-            mGridClassroomTwelve.setRowCount(30);
-            mGridClassroomTwelve.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue5().size(); i++) {
-                TextView context3 = new TextView(this);
-                context3.setTextColor(getResources().getColor(R.color.colorBlack));
-                context3.setText(mClassRoom.getValue5().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.rightMargin = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomTwelve.addView(context3, params);
-            }
-        }
-
-
-        if (mClassRoom.getValue7() != null) {
-            mGridClassroomFourteen.setRowCount(30);
-            mGridClassroomFourteen.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue7().size(); i++) {
-                TextView context4 = new TextView(this);
-                context4.setTextColor(getResources().getColor(R.color.colorBlack));
-                context4.setText(mClassRoom.getValue7().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomFourteen.addView(context4, params);
-            }
-        }
-
-        if (mClassRoom.getValue9() != null) {
-            mGridClassroomSixteen.setRowCount(30);
-            mGridClassroomSixteen.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue9().size(); i++) {
-                TextView context5 = new TextView(this);
-                context5.setTextColor(getResources().getColor(R.color.colorBlack));
-                context5.setText(mClassRoom.getValue9().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.width = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomSixteen.addView(context5, params);
-            }
-        }
-
-        if (mClassRoom.getValue11() != null) {
-            mGridClassroomEighteen.setRowCount(30);
-            mGridClassroomEighteen.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue11().size(); i++) {
-                TextView context6 = new TextView(this);
-                context6.setTextColor(getResources().getColor(R.color.colorBlack));
-                context6.setText(mClassRoom.getValue11().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.width = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomEighteen.addView(context6, params);
-            }
-        }
-
-        if (mClassRoom.getValue13() != null) {
-            mGridClassroomTwenty.setRowCount(30);
-            mGridClassroomTwenty.setColumnCount(4);
-            for (int i = 0; i < mClassRoom.getValue13().size(); i++) {
-                TextView context7 = new TextView(this);
-                context7.setTextColor(getResources().getColor(R.color.colorBlack));
-                context7.setText(mClassRoom.getValue13().get(i));
-                GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-//                params.width = DimensUtil.dp2px(42f);
-                params.width = 2 * mGridClassroomEight.getWidth() / 7;
-                params.topMargin = DimensUtil.dp2px(16f);
-                mGridClassroomTwenty.addView(context7, params);
+                mGridClassrooms[i].addView(context, params);
             }
         }
     }
@@ -270,19 +168,19 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
         String s = str.substring(index + 1, index + 3);
         switch (s) {
             case "周一":
-                s = "mon";
+                s = "1";
                 break;
             case "周二":
-                s = "tue";
+                s = "2";
                 break;
             case "周三":
-                s = "wed";
+                s = "3";
                 break;
             case "周四":
-                s = "thu";
+                s = "4";
                 break;
             case "周五":
-                s = "fri";
+                s = "5";
                 break;
         }
         return s;
@@ -295,9 +193,16 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     }
 
     private String getBuidingValue(String str) {
-        int index = str.indexOf("号");
-        String s = str.substring(index - 1, index);
-        return s;
+        str = str.substring(str.lastIndexOf("周")+2);
+        switch (str) {
+            case "7号楼":
+                return "7";
+            case "8号楼":
+                return "8";
+            case "南湖综合楼":
+                return "N";
+        }
+        return "7";
     }
 
 
@@ -332,19 +237,33 @@ public class StudyRoomDetailActivity extends ToolbarActivity {
     private void initView() {
         mStudyDetailLayout = findViewById(R.id.study_detail_layout);
         mMultiStatusView = findViewById(R.id.multi_status_view);
-        mTitleStudyRoomEight = findViewById(R.id.title_study_room_eight);
-        mGridClassroomEight = findViewById(R.id.grid_classroom_eight);
-        mTitleStudyRoomTen = findViewById(R.id.title_study_room_ten);
-        mGridClassroomTen = findViewById(R.id.grid_classroom_ten);
-        mTitleStudyRoomTwelve = findViewById(R.id.title_study_room_twelve);
-        mGridClassroomTwelve = findViewById(R.id.grid_classroom_twelve);
-        mTitleStudyRoomFourteen = findViewById(R.id.title_study_room_fourteen);
-        mGridClassroomFourteen = findViewById(R.id.grid_classroom_fourteen);
-        mTitleStudyRoomSixteen = findViewById(R.id.title_study_room_sixteen);
-        mGridClassroomSixteen = findViewById(R.id.grid_classroom_sixteen);
-        mTitleStudyRoomEighteen = findViewById(R.id.title_study_room_eighteen);
-        mGridClassroomEighteen = findViewById(R.id.grid_classroom_eighteen);
-        mTitleStudyRoomTwenty = findViewById(R.id.title_study_room_twenty);
-        mGridClassroomTwenty = findViewById(R.id.grid_classroom_twenty);
+        mTitleStudyRoom1 = findViewById(R.id.title_study_room_1);
+        mGridClassroom1 = findViewById(R.id.grid_classroom_1);
+        mTitleStudyRoom2 = findViewById(R.id.title_study_room_2);
+        mGridClassroom2 = findViewById(R.id.grid_classroom_2);
+        mTitleStudyRoom3 = findViewById(R.id.title_study_room_3);
+        mGridClassroom3 = findViewById(R.id.grid_classroom_3);
+        mTitleStudyRoom4 = findViewById(R.id.title_study_room_4);
+        mGridClassroom4 = findViewById(R.id.grid_classroom_4);
+        mTitleStudyRoom5 = findViewById(R.id.title_study_room_5);
+        mGridClassroom5 = findViewById(R.id.grid_classroom_5);
+        mTitleStudyRoom6 = findViewById(R.id.title_study_room_6);
+        mGridClassroom6 = findViewById(R.id.grid_classroom_6);
+        mTitleStudyRoom7 = findViewById(R.id.title_study_room_7);
+        mGridClassroom7 = findViewById(R.id.grid_classroom_7);
+        mTitleStudyRoom8 = findViewById(R.id.title_study_room_8);
+        mGridClassroom8 = findViewById(R.id.grid_classroom_8);
+        mTitleStudyRoom9 = findViewById(R.id.title_study_room_9);
+        mGridClassroom9 = findViewById(R.id.grid_classroom_9);
+        mTitleStudyRoom10 = findViewById(R.id.title_study_room_10);
+        mGridClassroom10 = findViewById(R.id.grid_classroom_10);
+        mTitleStudyRoom11 = findViewById(R.id.title_study_room_11);
+        mGridClassroom11 = findViewById(R.id.grid_classroom_11);
+        mTitleStudyRoom12 = findViewById(R.id.title_study_room_12);
+        mGridClassroom12 = findViewById(R.id.grid_classroom_12);
+
+        mGridClassrooms = new GridLayout[]{mGridClassroom1, mGridClassroom2,
+                mGridClassroom3, mGridClassroom4, mGridClassroom5, mGridClassroom6, mGridClassroom7,
+                mGridClassroom8, mGridClassroom9, mGridClassroom10, mGridClassroom11, mGridClassroom12};
     }
 }

@@ -21,7 +21,7 @@ public class StudyAreaOptionActivity extends ToolbarActivity {
     //自习楼栋查询参数
     private String area;
 
-    String[] buildings = {"7号楼", "8号楼"};
+    String[] buildings = {"7号楼", "8号楼","南湖综合楼"};
 
     private AreaOptionAdapter mAdapter;
     private RecyclerView mBuildingRecyclerView;
