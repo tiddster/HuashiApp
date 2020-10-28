@@ -120,10 +120,10 @@ public class MoreFragment extends BaseAppFragment {
         String[] versions = version.split("\\.");
         String[] now = BuildConfig.VERSION_NAME.split("\\.");
         for(int i = 0 ; i < 3 ; i++) {
-            if ( Integer.parseInt(versions[i]) >= Integer.parseInt(now[i]) )
-                return true;
+            if ( Integer.parseInt(versions[i]) > Integer.parseInt(now[i]) )
+                return false;
         }
-        return false;
+        return true;
     }
 
     private void checkUpdates() {
