@@ -8,6 +8,7 @@ import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -70,6 +71,8 @@ public class LoginActivity extends ToolbarActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //防截屏录屏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         initView();
         type = getIntent().getStringExtra("type");
         if (type.equals("info")) {
