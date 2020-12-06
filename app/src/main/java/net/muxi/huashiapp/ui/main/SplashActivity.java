@@ -3,15 +3,21 @@ package net.muxi.huashiapp.ui.main;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
+import com.muxistudio.common.util.RootCheck;
+import com.muxistudio.common.util.SignCheck;
 
+import net.muxi.huashiapp.App;
 import net.muxi.huashiapp.R;
+import net.muxi.huashiapp.ui.more.CheckUpdateDialog;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +32,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 
-public class SplashActivity extends Activity {
+public class SplashActivity extends AppCompatActivity {
 
 
     private Button button;
@@ -42,12 +48,32 @@ public class SplashActivity extends Activity {
         draweeView=(SimpleDraweeView) findViewById(R.id.splash_drawee);
         button.setVisibility(View.INVISIBLE);
         context=this;
-        getConfig();
-        button.setOnClickListener(v -> {
-            unsubscribe();
-            MainActivity.start(context);
-            finish();
-        });
+        SignCheck signCheck = new SignCheck(this, "B0:82:FE:46:80:04:1F:47:5C:6F:8D:DD:30:3D:6C:6C:06:1A:AC:83");
+        if(signCheck.check()) {
+            if (RootCheck.checkRootWhichSU()) {
+                Toast.makeText(this,"root",Toast.LENGTH_LONG).show();
+                final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+                checkUpdateDialog.setTitle("启动失败");
+                checkUpdateDialog.setContent("本应用禁止在Root设备上使用");
+                checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), checkUpdateDialog::dismiss);
+                checkUpdateDialog.show(getSupportFragmentManager(), "dialog_root");
+            }else {
+                getConfig();
+                button.setOnClickListener(v -> {
+                    unsubscribe();
+                    MainActivity.start(context);
+                    finish();
+                });
+            }
+        } else {
+
+            Toast.makeText(this,"签名",Toast.LENGTH_LONG).show();
+            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
+            checkUpdateDialog.setTitle("应用签名错误");
+            checkUpdateDialog.setContent("请前往华师匣子官网（ccnubox.muxixyz.com）下载正版App");
+            checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), checkUpdateDialog::dismiss);
+            checkUpdateDialog.show(getSupportFragmentManager(), "dialog_sign");
+        }
     }
 
     @Override
