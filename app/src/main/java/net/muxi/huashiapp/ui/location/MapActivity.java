@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -117,7 +116,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
         RxBus.getDefault().toObservable(DetailEven.class)
                 .subscribe(detailEven ->  showDetail(detailEven.getName(),detailEven.isSearchOrRoute(),mMapPresenter.getEndMarker()),
                         Throwable::printStackTrace,
-                        ()-> Log.i(TAG, "detailEven"));
+                        ()-> Logger.i(TAG+" detailEven"));
 
     }
 
@@ -266,7 +265,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
             if (amapLocation.getErrorCode() == 0) {
                 mMapPresenter.setLocation();
             } else {
-                Log.e("AmapError", "location Error, ErrCode:"
+                Logger.e("AmapError"+" location Error, ErrCode:"
                         + amapLocation.getErrorCode() + ", errInfo:"
                         + amapLocation.getErrorInfo());
             }
@@ -439,7 +438,7 @@ public class MapActivity extends FragmentActivity implements AMapLocationListene
     public BottomFragment getDetailFragment() {
         BottomFragment fragment = (BottomFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
         if (fragment == null) {
-            Log.i(TAG, "getDetailFragment: create fragment");
+            Logger.i(TAG+" getDetailFragment: create fragment");
             fragment = new BottomFragment();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.map_bottom_ll, fragment, FRAGMENT_TAG)

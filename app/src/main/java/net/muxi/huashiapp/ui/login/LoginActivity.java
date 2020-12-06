@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -18,6 +17,7 @@ import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.user.UserAccountManager;
 import com.muxistudio.appcommon.utils.CommonTextUtils;
 import com.muxistudio.appcommon.widgets.LoadingDialog;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.NetUtil;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.muxistudio.common.util.ToastUtil;
@@ -104,12 +104,12 @@ public class LoginActivity extends ToolbarActivity {
             loginPresenter.performLogin(new Subscriber<ResponseBody>() {
                 @Override
                 public void onCompleted() {
-                    Log.i(TAG, "onCompleted: ");
+                    Logger.i(TAG+" onCompleted: ");
                 }
 
                 @Override
                 public void onError(Throwable e) {
-                    Log.e(TAG, "onError: "+e.getMessage());
+                    Logger.e(TAG+" onError: "+e.getMessage());
                     hideLoading();
                     if (UserAccountManager.getInstance().isInfoUserLogin()) {
                         ToastUtil.showLong("认证成功！");

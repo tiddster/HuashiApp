@@ -2,8 +2,8 @@ package com.muxistudio.common.jsbridge;
 
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.muxistudio.common.util.Logger;
 import com.tencent.smtt.sdk.WebView;
 import com.tencent.smtt.sdk.WebViewClient;
 
@@ -25,7 +25,7 @@ public class BridgeWebClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView webView, String s) {
         Uri uri = Uri.parse(s);
-        Log.d("jsbridge", s);
+        Logger.d("jsbridge"+" "+s);
         if (uri.getScheme().equals(PROTOCOL_HYBRID)) {
             try {
                 final String event = uri.getHost();

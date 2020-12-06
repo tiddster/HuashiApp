@@ -15,7 +15,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.muxistudio.appcommon.appbase.BaseAppActivity;
@@ -84,7 +83,7 @@ public class MainActivity extends BaseAppActivity implements
             ccnuCrawler3.performLogin(new Subscriber<ResponseBody>() {
                 @Override
                 public void onCompleted() {
-                    Log.i(TAG, "onCompleted: ");
+                    Logger.i(TAG+" onCompleted: ");
                     ccnuCrawler3.getClient().saveCookieToLocal();
 
                 }
@@ -92,16 +91,16 @@ public class MainActivity extends BaseAppActivity implements
                 @Override
                 public void onError(Throwable e) {
                     if (e instanceof HttpException) {
-                        Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                        Logger.e(TAG+" onError: httpexception code " + ((HttpException) e).response().code());
                         try {
-                            Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                            Logger.e(TAG+" onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
                         } catch (Exception e1) {
                             e1.printStackTrace();
                         }
                     } else if (e instanceof NullPointerException)
-                        Log.e(TAG, "onError: null   " + e.getMessage());
+                        Logger.e(TAG+" onError: null   " + e.getMessage());
                     else
-                        Log.e(TAG, "onError: ");
+                        Logger.e(TAG+" onError: ");
                     e.printStackTrace();
 
 
@@ -109,7 +108,7 @@ public class MainActivity extends BaseAppActivity implements
 
                 @Override
                 public void onNext(ResponseBody responseBody) {
-                    Log.i(TAG, "onNext: " + "login success");
+                    Logger.i(TAG+" onNext: " + "login success");
 
 
                 }

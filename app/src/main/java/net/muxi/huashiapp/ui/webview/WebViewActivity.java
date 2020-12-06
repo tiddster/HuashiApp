@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -351,7 +350,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         ArrayList<String> imgUrlList = new ArrayList<>();
         imgUrlList.add(picUrl);
         params.putStringArrayList(QQShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
-        Log.d("share", "start share to qq");
+        Logger.d("share"+" start share to qq");
         mTencent.shareToQQ(WebViewActivity.this, params, mBaseUiListener);
 
     }
@@ -369,7 +368,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         ArrayList<String> imgUrlList = new ArrayList<>();
         imgUrlList.add(picUrl);
         params.putStringArrayList(QzoneShare.SHARE_TO_QQ_IMAGE_URL, imgUrlList);// 图片地址
-        Log.d("share", "start share to zone");
+        Logger.d("share"+" start share to zone");
 //        ThreadManager.getMainHandler().post(new Runnable() {
 //            @Override
 //

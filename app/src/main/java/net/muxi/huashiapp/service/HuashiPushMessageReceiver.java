@@ -3,8 +3,8 @@ package net.muxi.huashiapp.service;
 import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.muxistudio.common.util.Logger;
 import com.xiaomi.mipush.sdk.ErrorCode;
 import com.xiaomi.mipush.sdk.MiPushClient;
 import com.xiaomi.mipush.sdk.MiPushCommandMessage;
@@ -79,9 +79,9 @@ public class HuashiPushMessageReceiver extends PushMessageReceiver {
         if (MiPushClient.COMMAND_REGISTER.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {
                 mRegId = cmdArg1;
-                Log.d("fuck u", mRegId);
+                Logger.d("fuck u"+" "+mRegId);
             }else{
-                Log.d("fuck", "failed");
+                Logger.d("fuck"+" failed");
             }
         } else if (MiPushClient.COMMAND_SET_ALIAS.equals(command)) {
             if (message.getResultCode() == ErrorCode.SUCCESS) {

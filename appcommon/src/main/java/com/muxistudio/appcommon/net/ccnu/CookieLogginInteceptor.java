@@ -1,6 +1,7 @@
 package com.muxistudio.appcommon.net.ccnu;
 
-import android.util.Log;
+
+import com.muxistudio.common.util.Logger;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -26,7 +27,7 @@ public class CookieLogginInteceptor implements Interceptor {
         while (it.hasNext()){
             logging += it.next() + "= "+ headers.values(it.next())+"\n";
         }
-        Log.d("loggings", "intercept: "+logging);
+        Logger.d("loggings  intercept: "+logging);
         return chain.proceed(request);
     }
 }

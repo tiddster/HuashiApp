@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import com.muxistudio.appcommon.appbase.BaseAppFragment;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.appcommon.net.CampusFactory;
 import com.muxistudio.appcommon.utils.UserUtil;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.ToastUtil;
 
 import net.muxi.huashiapp.R;
@@ -118,7 +118,7 @@ public class CurCreditFragment extends BaseAppFragment {
         ccnuCrawler3.performLoginSystem(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
-                Log.i(TAG, "onCompleted: ");
+                Logger.i(TAG+" onCompleted: ");
                 ccnuCrawler3.getClient().saveCookieToLocal();
                 loadCredit();
             }
@@ -126,22 +126,22 @@ public class CurCreditFragment extends BaseAppFragment {
             @Override
             public void onError(Throwable e) {
                 if (e instanceof HttpException) {
-                    Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                    Logger.e(TAG+" onError: httpexception code " + ((HttpException) e).response().code());
                     try {
-                        Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                        Logger.e(TAG+" onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
                 } else if (e instanceof NullPointerException)
-                    Log.e(TAG, "onError: null   " + e.getMessage());
+                    Logger.e(TAG+" onError: null   " + e.getMessage());
                 else
-                    Log.e(TAG, "onError: ");
+                    Logger.e(TAG+" onError: ");
                 e.printStackTrace();
             }
 
             @Override
             public void onNext(ResponseBody responseBody) {
-                Log.i(TAG, "onNext: " + "login success");
+                Logger.i(TAG+" onNext: " + "login success");
             }
         });
 

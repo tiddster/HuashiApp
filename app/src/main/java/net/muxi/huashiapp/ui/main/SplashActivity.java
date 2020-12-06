@@ -3,14 +3,12 @@ package net.muxi.huashiapp.ui.main;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.muxistudio.appcommon.data.Config;
 import com.muxistudio.appcommon.net.CampusFactory;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import net.muxi.huashiapp.R;
@@ -71,13 +69,13 @@ public class SplashActivity extends Activity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(config -> {
-                    Log.i(TAG, "getConfig: "+config.getConfig().getCalendarUrl());
+                    Logger.i(TAG+" getConfig: "+config.getConfig().getCalendarUrl());
                     PreferenceUtil.saveString(PreferenceUtil.FIRST_WEEK_DATE,config.getConfig().getStartCountDayPresetForV2());
                     PreferenceUtil.saveString(PreferenceUtil.CALENDAR_ADDRESS,config.getConfig().getCalendarUrl());
                     DateFormat dataFormat=new SimpleDateFormat("yyyy-MM-dd", Locale.CHINESE);
                     String cur=dataFormat.format(new Date());
                     if (cur.compareTo(config.getConfig().getFlashStartDay())>=0&&cur.compareTo(config.getConfig().getFlashEndDay())<=0){
-                        Log.i(TAG, "getConfig: display");
+                        Logger.i(TAG+" getConfig: display");
                         draweeView.setVisibility(View.VISIBLE);
                         draweeView.setImageURI(config.getConfig().getFlashScreenUrl());
                         button.setVisibility(View.VISIBLE);
@@ -90,7 +88,7 @@ public class SplashActivity extends Activity {
                 }).subscribe(new Observer<Long>() {
             @Override
             public void onCompleted() {
-                Log.i(TAG, "onCompleted: ");
+                Logger.i(TAG+" onCompleted: ");
                 if (context!=null)
                     MainActivity.start(context);
                 finish();

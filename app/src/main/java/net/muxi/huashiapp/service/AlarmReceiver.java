@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.AttentionBook;
@@ -77,27 +76,26 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         //判断对应的登录状态以及当前时间,还有用户是否设置提醒
         if (intent.getIntExtra(Constants.ALARMTIME, 2) == 2) {
-            Log.d(TAG,
-                    PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true) + "");
+            Logger.d(TAG+" "+PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true) + "");
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_schedule), true)) {
                 checkCourses();
-                Log.d(TAG, "check course");
+                Logger.d(TAG+" check course");
             }
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();
-                Log.d(TAG, "check score");
+                Logger.d(TAG+" check score");
             }
         }
         if (intent.getIntExtra(Constants.ALARMTIME, 0) == 1) {
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();
-                Log.d(TAG, "check score");
+                Logger.d(TAG+" check score");
             }
         }
         if (intent.getIntExtra(Constants.ALARMTIME, 0) == 0) {
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_card), true)) {
                 checkCard();
-                Log.d(TAG, "check card");
+                Logger.d(TAG+" check card");
             }
             if (PreferenceUtil.getBoolean(App.getContext().getString(R.string.pre_score), true)) {
                 checkScores();

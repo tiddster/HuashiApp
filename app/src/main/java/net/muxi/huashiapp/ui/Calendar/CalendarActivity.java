@@ -9,8 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -126,7 +124,7 @@ public class CalendarActivity extends ToolbarActivity {
                 Response response=null;
                 FileOutputStream out=null;
                 try {
-                    Log.i(TAG, "call: "+file.getPath());
+                    Logger.i(TAG+" call: "+file.getPath());
                     response=client.newCall(request).execute();
                     out=new FileOutputStream(file);
 
@@ -194,7 +192,7 @@ public class CalendarActivity extends ToolbarActivity {
         option.inJustDecodeBounds=true;
         BitmapFactory.decodeFile(file.getPath(), option);
         float scale=(float) width/option.outWidth;
-        Log.i(TAG, "fiTXY: "+scale);
+        Logger.i(TAG+" fiTXY: "+scale);
         return scale;
     }
 

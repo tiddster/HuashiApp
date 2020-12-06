@@ -3,7 +3,6 @@ package net.muxi.huashiapp.ui.location;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.TextView;
 
 import com.amap.api.services.core.LatLonPoint;
 import com.muxistudio.appcommon.data.MapDetailList;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.SuggestionActivity;
@@ -49,7 +49,7 @@ public class MapSearchAdapter extends RecyclerView.Adapter{
 
     @Override
     public int getItemCount(){
-        Log.d("COME FROM ADAPTER",mList.size()+"");
+        Logger.d("COME FROM ADAPTER"+" "+mList.size()+"");
         return mList.size()+mFooterCount;
     }
 

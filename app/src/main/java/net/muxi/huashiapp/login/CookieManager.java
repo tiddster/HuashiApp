@@ -3,7 +3,8 @@ package net.muxi.huashiapp.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.Nullable;
-import android.util.Log;
+
+import com.muxistudio.common.util.Logger;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -251,7 +252,7 @@ public class CookieManager {
                 &&first.hostOnly()==second.hostOnly()
                 &&first.httpOnly()==second.httpOnly()
                 &&first.path().equals(second.path());
-        Log.i("sad", "isSameCookie: "+flag);
+        Logger.i("sad"+" isSameCookie: "+flag);
         return flag;
 
     }

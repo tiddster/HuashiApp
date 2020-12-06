@@ -4,7 +4,6 @@ package net.muxi.huashiapp.ui.score.adapter;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.ui.score.fragments.ScoreDetailDialog;
@@ -108,7 +108,7 @@ public class ScoreCreditAdapter extends RecyclerView.Adapter<ScoreCreditAdapter.
 
         //先变化ui 变化之后的状态
         holder.mCbCredit.setOnClickListener(v -> {
-            Log.i("bug", "onBindViewHolder: "+position);
+            Logger.i("bug"+" onBindViewHolder: "+position);
             if(!holder.mCbCredit.isChecked()){
                 mCheckMap.put(position,false);
             }else{

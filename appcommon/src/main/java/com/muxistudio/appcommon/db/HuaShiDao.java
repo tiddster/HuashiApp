@@ -2,12 +2,12 @@ package com.muxistudio.appcommon.db;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.muxistudio.appcommon.data.ApartmentData;
 import com.muxistudio.appcommon.data.BannerData;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.appcommon.data.WebsiteData;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.PreferenceUtil;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class HuaShiDao {
 
     public List<String> loadSearchHistory() {
         String libraryId = PreferenceUtil.getString(PreferenceUtil.LIBRARY_ID, "0");
-        Log.d("tag", libraryId);
+        Logger.d("tag  "+libraryId);
         List<String> records = new ArrayList<>();
         Cursor cursor;
         cursor = db.rawQuery("SELECT * FROM " + DataBase.TABLE_SEARCH_HISTORY +

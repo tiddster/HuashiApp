@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +118,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("mainfragment", "onCreateView: call");
+        Logger.i("mainfragment"+" onCreateView: call");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mToolbar = view.findViewById(R.id.toolbar);
         mRecyclerView = view.findViewById(R.id.recycler_view);
@@ -369,7 +368,7 @@ public class MainFragment extends BaseAppFragment implements MyItemTouchCallback
     //fixme beginTransaction() may produce NPE
     // fixme referring https://stackoverflow.com/questions/27742471/nullpointerexception-fragmentmanager-begintransaction
     public void refresh() {
-        Log.i("refresh", "refresh: call");
+        Logger.i("refresh"+" refresh: call");
         FragmentTransaction ft = getFragmentManager().beginTransaction();
         ft.detach(this).attach(this).commit();
     }

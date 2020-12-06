@@ -2,9 +2,6 @@ package net.muxi.huashiapp.utils;
 
 import android.text.TextUtils;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Course;
 import com.muxistudio.common.util.DateUtil;

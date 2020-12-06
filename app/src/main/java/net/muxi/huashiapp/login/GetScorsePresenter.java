@@ -1,7 +1,8 @@
 package net.muxi.huashiapp.login;
 
 import android.text.TextUtils;
-import android.util.Log;
+
+import com.muxistudio.common.util.Logger;
 
 import java.util.Date;
 import java.util.List;
@@ -59,11 +60,11 @@ public class GetScorsePresenter {
                                       return Observable.error(new NullPointerException("cookie ==null"));
                                   int index=cookies.get(0).indexOf('=');
                                   String valueOfcookie=cookies.get(0).substring(index+1);
-                                  Log.i(TAG, "first call in flatmap: cookie  "+cookies.get(0));
+                                  Logger.i(TAG+" first call in flatmap: cookie  "+cookies.get(0));
                                   String[]params=null;
                                   try {
                                     params= getWordFromHtml(response.body().string());
-                                      Log.i(TAG, "call: regex get param from html:" + params[0]+"  "+params[1]);
+                                      Logger.i(TAG+" call: regex get param from html:" + params[0]+"  "+params[1]);
                                   } catch (Exception e) {
                                       e.printStackTrace();
                                       return Observable.error(e);
@@ -77,17 +78,17 @@ public class GetScorsePresenter {
             @Override
             public Observable<ResponseBody> call(ResponseBody responseBody) {
                 //todo 完善错误处理
-                Log.i(TAG, "call: first 学校系统登录完成，下一步进行教务处登录验证");
+                Logger.i(TAG+" call: first 学校系统登录完成，下一步进行教务处登录验证");
                 return clientWithRetrofit.performSystemLogin();
             }
         }).subscribe(subscriber);
-        Log.i(TAG, "LoginJWC: subscription :"+loginSubscription.isUnsubscribed());
+        Logger.i(TAG+" LoginJWC: subscription :"+loginSubscription.isUnsubscribed());
     }
 
 
     public void getScores(Subscriber<ResponseBody>subscriber){
         if (loginSubscription==null&&!isLogined()){
-            Log.e(TAG, "getScores: wrong"+"未登录或登录失败,使用前请确认调用loginJWC()方法" );
+            Logger.e(TAG+" getScores: wrong"+"未登录或登录失败,使用前请确认调用loginJWC()方法" );
             return ;
         }
        scoreSubscription= Observable.unsafeCreate(new Observable.OnSubscribe<String>() {
@@ -95,7 +96,7 @@ public class GetScorsePresenter {
             public void call(Subscriber<? super String> subscriber) {
                 if (loginSubscription==null)return;
                 while (!loginSubscription.isUnsubscribed()){
-                    Log.i(TAG, "call: wait");
+                    Logger.i(TAG+" call: wait");
                     try {
                         Thread.sleep(500);
                     } catch (InterruptedException e) {

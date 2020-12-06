@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -41,7 +40,7 @@ public class EntranceActivity extends BaseAppActivity implements View.OnClickLis
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isFirstOpen = PreferenceUtil.getBoolean(PreferenceUtil.APP_FIRST_OPEN, true);
-        Log.i("aaa", "onCreate: entrance");
+        Logger.i("aaa"+" onCreate: entrance");
         if (!isFirstOpen) {
             startMainActivityDelay(0);
             if (PreferenceUtil.getString(Constants.SPLASH_IMG).equals("")) {

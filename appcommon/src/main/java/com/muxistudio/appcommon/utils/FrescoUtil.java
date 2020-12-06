@@ -3,7 +3,6 @@ package com.muxistudio.appcommon.utils;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.util.Log;
 
 import com.facebook.binaryresource.BinaryResource;
 import com.facebook.binaryresource.FileBinaryResource;
@@ -47,10 +46,10 @@ public class FrescoUtil {
         File cacheFile = getCacheImageOnDisk(cacheKey);
         if (cacheFile == null) {
             downloadImage(Uri.parse(picUrl), fileName, context);
-            Log.d("frescoUtil","download successful");
+            Logger.d("frescoUtil  download successful");
         } else {
             copyTo(cacheFile, picDir, fileName);
-            Log.d("frescoUtil","copy successful");
+            Logger.d("frescoUtil  copy successful");
         }
     }
 
@@ -116,7 +115,7 @@ public class FrescoUtil {
             @Override
             protected void onNewResultImpl(Bitmap bitmap) {
                 if (bitmap == null) {
-                    Log.d("FrescoUtil", "save image failed");
+                    Logger.d("FrescoUtil  save image failed");
                 }
                 File appDir = new File(IMAGE_CACHE_DIR);
                 if (!appDir.exists()) {

@@ -7,10 +7,10 @@ import android.security.keystore.KeyGenParameterSpec;
 import android.security.keystore.KeyProperties;
 import android.support.annotation.RequiresApi;
 import android.util.Base64;
-import android.util.Log;
 
 import com.muxistudio.appcommon.utils.SPUtils;
 import com.muxistudio.common.base.Global;
+import com.muxistudio.common.util.Logger;
 
 
 import java.math.BigInteger;
@@ -113,7 +113,7 @@ public class EncryptionUser {
             byte[] generate=random.generateSeed(16);
             ivd= Base64.encodeToString(generate, Base64.DEFAULT);
             spUtils.put(SP_IV,ivd);
-            Log.i("TAG", "getIv: "+new String(generate));
+            Logger.i("TAG  getIv: "+new String(generate));
             return generate;
         }
         iv= Base64.decode(ivd, Base64.DEFAULT);

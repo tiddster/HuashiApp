@@ -4,10 +4,10 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
-import android.util.Log
 import com.muxistudio.appcommon.data.A
 import com.muxistudio.appcommon.net.CampusFactory
 import com.muxistudio.appcommon.net.CampusRetrofit
+import com.muxistudio.common.util.Logger
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -35,7 +35,7 @@ fun Context.cache(username:String?, userPassword:String?){
         .observeOn(AndroidSchedulers.mainThread())
         .subscribe(object:Subscriber<Any>(){
           override fun onNext(t: Any?) {
-            Log.d("Trasmit","complete")
+            Logger.d("Trasmit complete")
           }
 
           override fun onCompleted() {

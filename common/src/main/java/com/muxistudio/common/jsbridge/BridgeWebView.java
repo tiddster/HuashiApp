@@ -3,9 +3,9 @@ package com.muxistudio.common.jsbridge;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import com.google.gson.Gson;
+import com.muxistudio.common.util.Logger;
 import com.tencent.smtt.sdk.WebView;
 
 import java.util.HashMap;
@@ -99,7 +99,7 @@ public class BridgeWebView extends WebView {
             if (callbackHandler != null) {
                 responseHandlers.put(event + "Resolved" + (message.id), callbackHandler);
             }
-            Log.d("jsbridge", String.format(JS_SEND_DATA_FORMAT, json));
+            Logger.d("jsbridge"+" "+String.format(JS_SEND_DATA_FORMAT, json));
             this.loadUrl(String.format(JS_SEND_DATA_FORMAT, json), null);
         } catch (Exception e) {
             e.printStackTrace();

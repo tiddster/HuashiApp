@@ -1,6 +1,7 @@
 package net.muxi.huashiapp.login;
 
-import android.util.Log;
+
+import com.muxistudio.common.util.Logger;
 
 import java.io.IOException;
 
@@ -16,7 +17,7 @@ public class RedirectInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
 
         Request request=chain.request();
-        Log.i(TAG, "intercept: redirect url:-----> "+request.url().toString());
+        Logger.i(TAG+" intercept: redirect url:-----> "+request.url().toString());
 
         return chain.proceed(request);
     }

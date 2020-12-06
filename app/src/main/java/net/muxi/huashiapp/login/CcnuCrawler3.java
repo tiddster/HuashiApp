@@ -2,12 +2,12 @@ package net.muxi.huashiapp.login;
 
 import android.content.Intent;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.muxistudio.appcommon.RxBus;
 import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.event.LoginSuccessEvent;
 import com.muxistudio.appcommon.user.UserAccountManager;
+import com.muxistudio.common.util.Logger;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class CcnuCrawler3 {
                             return false;
                         if (throwable instanceof SingleSignException){
                             getClient().clearAllCookie();
-                            Log.e(TAG, "call: retry");
+                            Logger.e(TAG+" call: retry");
                             return true;
                         }else
                             return false;
@@ -110,7 +110,7 @@ public class CcnuCrawler3 {
 
                         //判断是否已经登录过了
                         if (isLogined(html)) {
-                            Log.i(TAG, "call: has logined");
+                            Logger.i(TAG+" call: has logined");
 
                             return clientWithRetrofit.performSystemLogin()
                                     .flatMap(new Func1<ResponseBody, Observable<ResponseBody>>() {
@@ -118,7 +118,7 @@ public class CcnuCrawler3 {
                                         public Observable<ResponseBody> call(ResponseBody responseBody) {
                                             try {
                                                 if (isSingleSignOn(responseBody.string())) {
-                                                    Log.i(TAG, "call: 单点登录异常，清除cookie重试");
+                                                    Logger.i(TAG+" call: 单点登录异常，清除cookie重试");
                                                     return Observable.error(new SingleSignException());
                                                 }
                                             } catch (IOException e) {
@@ -140,14 +140,14 @@ public class CcnuCrawler3 {
                                 return Observable.error(new NullPointerException("cookie ==null"));
                             int index = cookies.get(0).indexOf('=');
                             valueOfcookie = cookies.get(0).substring(index + 1);
-                            Log.i(TAG, "first call in flatmap: cookie  " + cookies.get(0));
+                            Logger.i(TAG+" first call in flatmap: cookie  " + cookies.get(0));
                         } catch (Exception e) {
                             return Observable.error(new NullPointerException("first reponse cookie wrong"));
                         }
 
                         String[] params = null;
                         params = getWordFromHtml(html);
-                        Log.i(TAG, "call: regex get param from html:" + params[0] + "  " + params[1]);
+                        Logger.i(TAG+" call: regex get param from html:" + params[0] + "  " + params[1]);
                         if (params == null)
                             return Observable.error(new NullPointerException("first html get words wrong"));
 
@@ -164,14 +164,14 @@ public class CcnuCrawler3 {
 
                         }
                         if (loginFailed(html)) {
-                            Log.i(TAG, "call: 密码错误");
+                            Logger.i(TAG+" call: 密码错误");
                             return Observable.error(new Throwable("密码错误"));
                         }
 
                         //到这证明账号密码正确，可以拉去缓存
                         UserAccountManager.getInstance().saveInfoUser(user);
 
-                        Log.i(TAG, "call: first 学校系统登录完成，下一步进行教务处登录验证");
+                        Logger.i(TAG+" call: first 学校系统登录完成，下一步进行教务处登录验证");
                         return clientWithRetrofit.performSystemLogin();
                     }
                 })
@@ -182,7 +182,7 @@ public class CcnuCrawler3 {
                             return false;
                         if (throwable instanceof SingleSignException){
                             getClient().clearAllCookie();
-                            Log.i(TAG, "call: retry");
+                            Logger.i(TAG+" call: retry");
                             return true;
                         }else
                             return false;
@@ -199,7 +199,7 @@ public class CcnuCrawler3 {
                 if (loginSubscription == null) return;
                 int time = 0;
                 while (!loginSubscription.isUnsubscribed() && time < 10) {
-                    Log.i(TAG, "call: wait");
+                    Logger.i(TAG+" call: wait");
                     try {
                         Thread.sleep(500);
                         time++;
@@ -221,18 +221,18 @@ public class CcnuCrawler3 {
                 }).subscribe(new Subscriber<ResponseBody>() {
                     @Override
                     public void onCompleted() {
-                        Log.i(TAG, "onCompleted: lib login finish");
+                        Logger.i(TAG+" onCompleted: lib login finish");
 
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.e(TAG, "onError: lib login fail");
+                        Logger.e(TAG+" onError: lib login fail");
                     }
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        Log.i(TAG, "onCompleted: lib login finish");
+                        Logger.i(TAG+" onCompleted: lib login finish");
                         getClient().saveCookieToLocal();
 
                         //RxBus.getDefault().send(new LibLoginEvent());
@@ -294,10 +294,10 @@ public class CcnuCrawler3 {
         Pattern p = Pattern.compile("<div id=\"msg\" class=\"success\">.+?</div>", Pattern.DOTALL);
         Matcher m = p.matcher(html);
         if (m.find()) {
-            Log.i(TAG, "isLogined: ");
+            Logger.i(TAG+" isLogined: ");
             return true;
         } else {
-            Log.i(TAG, "has not Logined or out of data ");
+            Logger.i(TAG+" has not Logined or out of data ");
             return false;
         }
     }
@@ -307,7 +307,7 @@ public class CcnuCrawler3 {
         Pattern p = Pattern.compile("<div id=\"msg\" class=\"errors\">.+?</div>", Pattern.DOTALL);
         Matcher m = p.matcher(html);
         if (m.find()) {
-            Log.i(TAG, "faild 密码错误 ");
+            Logger.i(TAG+" faild 密码错误 ");
             return true;
         } else {
             return false;

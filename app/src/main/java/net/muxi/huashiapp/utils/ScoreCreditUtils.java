@@ -2,11 +2,11 @@ package net.muxi.huashiapp.utils;
 
 import android.annotation.SuppressLint;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.data.Score;
 import com.muxistudio.common.util.DateUtil;
+import com.muxistudio.common.util.Logger;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -380,7 +380,7 @@ public class ScoreCreditUtils {
         JSONObject jsonRoot = new JSONObject(json);
         JSONArray items = jsonRoot.getJSONArray("items");
         if (items == null || items.length() == 0) {
-            Log.i("util", "getScoreFromJson: item==null?" + (items == null));
+            Logger.i("util"+" getScoreFromJson: item==null?" + (items == null));
             return null;
         }
         for (int i = 0; i < items.length(); i++) {

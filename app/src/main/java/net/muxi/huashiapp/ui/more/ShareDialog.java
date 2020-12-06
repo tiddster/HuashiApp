@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -219,7 +218,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         params.putString(QQShare.SHARE_TO_QQ_TARGET_URL, url);//必填
         ArrayList<String> imgUrlList = new ArrayList<>();
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, picUrl);// 图片地址
-        Log.d("share", "start share to qq");
+        Logger.d("share"+" start share to qq");
         mTencent.shareToQQ(getActivity(),params,mBaseUiListener);
 
     }
@@ -234,7 +233,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
         }
         params.putString(QzoneShare.SHARE_TO_QQ_TARGET_URL, url);//必填
         params.putString(QQShare.SHARE_TO_QQ_IMAGE_URL, picUrl);// 图片地址
-        Log.d("share", "start share to zone");
+        Logger.d("share"+" start share to zone");
 //        ThreadManager.getMainHandler().post(new Runnable() {
 //            @Override
 //

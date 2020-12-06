@@ -12,7 +12,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -21,6 +20,7 @@ import com.google.gson.Gson;
 import com.muxistudio.appcommon.Constants;
 import com.muxistudio.appcommon.appbase.ToolbarActivity;
 import com.muxistudio.appcommon.data.Score;
+import com.muxistudio.common.util.Logger;
 import com.muxistudio.common.util.ToastUtil;
 import com.muxistudio.multistatusview.MultiStatusView;
 
@@ -118,15 +118,15 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onCompleted() {
                         //hideLoading();
-                        Log.i(TAG, "onCompleted: ");
+                        Logger.i(TAG+" onCompleted: ");
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         hideLoading();
-                        Log.i(TAG, "onError: ");
+                        Logger.i(TAG+" onError: ");
                         if (e instanceof HttpException) {
-                            Log.e(TAG, "onError: response code"+((HttpException)e).code() );
+                            Logger.e(TAG+" onError: response code"+((HttpException)e).code() );
                             ToastUtil.showShort("学校服务器异常，不是匣子的锅QAQ");
                             mMultiStatusView.showError();
                         }
@@ -139,7 +139,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
                     @Override
                     public void onNext(ResponseBody responseBody) {
 
-                        Log.i(TAG, "onNext: getscore");
+                        Logger.i(TAG+" onNext: getscore");
                         List<Score> scoreList = null;
                         try {
                             scoreList = ScoreCreditUtils.getScoreFromJson(responseBody.string());
@@ -174,7 +174,7 @@ public class ScoreDisplayActivity extends ToolbarActivity {
         ccnuCrawler3.performLoginSystem(new Subscriber<ResponseBody>() {
             @Override
             public void onCompleted() {
-                Log.i(TAG, "onCompleted: ");
+                Logger.i(TAG+" onCompleted: ");
                 ccnuCrawler3.getClient().saveCookieToLocal();
                 getScores();
             }
@@ -182,22 +182,22 @@ public class ScoreDisplayActivity extends ToolbarActivity {
             @Override
             public void onError(Throwable e) {
                 if (e instanceof HttpException) {
-                    Log.e(TAG, "onError: httpexception code " + ((HttpException) e).response().code());
+                    Logger.e(TAG+" onError: httpexception code " + ((HttpException) e).response().code());
                     try {
-                        Log.e(TAG, "onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
+                        Logger.e(TAG+" onError:  httpexception errorbody: " + ((HttpException) e).response().errorBody().string());
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
                 } else if (e instanceof NullPointerException)
-                    Log.e(TAG, "onError: null   " + e.getMessage());
+                    Logger.e(TAG+" onError: null   " + e.getMessage());
                 else
-                    Log.e(TAG, "onError: ");
+                    Logger.e(TAG+" onError: ");
                 e.printStackTrace();
             }
 
             @Override
             public void onNext(ResponseBody responseBody) {
-                Log.i(TAG, "onNext: " + "login success");
+                Logger.i(TAG+" onNext: " + "login success");
             }
         });
 
