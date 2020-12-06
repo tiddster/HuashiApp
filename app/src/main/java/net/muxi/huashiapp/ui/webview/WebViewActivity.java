@@ -93,12 +93,12 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
                 : getIntent().getStringExtra(WEB_URL);
         url = getIntent().hasExtra(WEB_URL) ? getIntent().getStringExtra(WEB_URL) : "";
         iconUrl = getIntent().hasExtra(WEB_ICON_URL) ? getIntent().getStringExtra(WEB_ICON_URL)
-                : "http://static.muxixyz.com/ccnubox_share_icon.jpg";
+                : "https://static.muxixyz.com/ccnubox_share_icon.jpg";
         intro = getIntent().hasExtra(WEB_INTRO) ? getIntent().getStringExtra(WEB_INTRO) : "";
         setTitle(title);
 
         configWebSetting();
-      
+
         mWebview.setWebChromeClient(new BrowserClient());
         mWebview.setWebViewClient(new BridgeWebClient(mWebview) {
             // mWebview.setWebViewClient(new WebViewClient() {
@@ -141,8 +141,8 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         //TODO: 18/6/1 待验证
         getWindow().getDecorView().addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
             ArrayList<View> outView = new ArrayList<View>();
-            getWindow().getDecorView().findViewsWithText(outView,"QQ浏览器",View.FIND_VIEWS_WITH_TEXT);
-            if(outView.size()>0){
+            getWindow().getDecorView().findViewsWithText(outView, "QQ浏览器", View.FIND_VIEWS_WITH_TEXT);
+            if (outView.size() > 0) {
                 outView.get(0).setVisibility(View.GONE);
             }
         });
@@ -181,57 +181,53 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_option) {
-            if (url.equals("http://consume.muxixyz.com")) {
-                ToastUtil.showLong("暂不支持将本网页分享出去哟");
-            } else {
-                ShareToDialog shareToDialog = new ShareToDialog();
-                shareToDialog.show(getSupportFragmentManager(), "");
+            ShareToDialog shareToDialog = new ShareToDialog();
+            shareToDialog.show(getSupportFragmentManager(), "");
 
-                shareToDialog.setOnItemClickListener(position -> {
-                    switch (position) {
-                        case 0:
-                            shareToQQ(title, intro, url, iconUrl);
-                            shareToDialog.dismiss();
-                            break;
-                        case 1:
-                            shareTOWXSceneSession();
-                            shareToDialog.dismiss();
-                            break;
-                        case 2:
-                            sendMultiMessage(true, false, false, false, false, false);
-                            shareToDialog.dismiss();
-                            break;
-                        case 3:
-                            shareToQzone(title, intro, url, iconUrl);
-                            shareToDialog.dismiss();
-                            break;
-                        case 4:
-                            shareTOWXSceneTimeline();
-                            shareToDialog.dismiss();
-                            break;
-                        case 6:
-                            mWebview.reload();
-                            shareToDialog.dismiss();
-                            break;
+            shareToDialog.setOnItemClickListener(position -> {
+                switch (position) {
+                    case 0:
+                        shareToQQ(title, intro, url, iconUrl);
+                        shareToDialog.dismiss();
+                        break;
+                    case 1:
+                        shareTOWXSceneSession();
+                        shareToDialog.dismiss();
+                        break;
+                    case 2:
+                        sendMultiMessage(true, false, false, false, false, false);
+                        shareToDialog.dismiss();
+                        break;
+                    case 3:
+                        shareToQzone(title, intro, url, iconUrl);
+                        shareToDialog.dismiss();
+                        break;
+                    case 4:
+                        shareTOWXSceneTimeline();
+                        shareToDialog.dismiss();
+                        break;
+                    case 6:
+                        mWebview.reload();
+                        shareToDialog.dismiss();
+                        break;
 
-                        case 7:
-                            AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
-                            showSnackbarShort(
-                                    getResources().getString(R.string.tip_copy_success));
-                            shareToDialog.dismiss();
-                            break;
+                    case 7:
+                        AppUtil.clipToClipBoard(WebViewActivity.this, mWebview.getUrl());
+                        showSnackbarShort(
+                                getResources().getString(R.string.tip_copy_success));
+                        shareToDialog.dismiss();
+                        break;
 
-                        case 8:
-                            Intent browserIntent = new Intent(Intent.ACTION_VIEW,
-                                    Uri.parse(mWebview.getUrl()));
-                            startActivity(browserIntent);
-                            shareToDialog.dismiss();
-                            break;
+                    case 8:
+                        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                                Uri.parse(mWebview.getUrl()));
+                        startActivity(browserIntent);
+                        shareToDialog.dismiss();
+                        break;
 
 
-                    }
-                });
-            }
+                }
+            });
         }
         return super.onOptionsItemSelected(item);
     }
@@ -325,7 +321,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         api.sendReq(req);
     }
 
-    public void     shareTOWXSceneTimeline() {
+    public void shareTOWXSceneTimeline() {
         WXWebpageObject webpageObject = new WXWebpageObject();
         webpageObject.webpageUrl = url;
         WXMediaMessage msg = new WXMediaMessage(webpageObject);

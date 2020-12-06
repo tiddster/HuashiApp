@@ -59,7 +59,7 @@ public class ShareDialog extends BottomDialogFragment implements IWeiboHandler.R
     private static final String CAL_INTRO = "2016—2017学年度校历";
     private static final String CAL_URL = "https://occc3ev3l.qnssl.com/xiaoli.png";
 
-    private static final String ICON_URL = "http://static.muxixyz.com/ccnubox_share_icon.jpg";
+    private static final String ICON_URL = "https://static.muxixyz.com/ccnubox_share_icon.jpg";
 
 
     public static Tencent mTencent;
