@@ -189,19 +189,22 @@
             android:exported="true"
             android:launchMode="singleInstance"/>
 
-        <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver">
+        <receiver android:name="net.muxi.huashiapp.service.AlarmLiveReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT"/>
             </intent-filter>
         </receiver>
 
-        <receiver android:name="net.muxi.huashiapp.service.AlarmReceiver">
+        <receiver android:name="net.muxi.huashiapp.service.AlarmReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="net.muxi.huashiapp.alarm"/>
             </intent-filter>
         </receiver>
 
-        <service android:name="net.muxi.huashiapp.service.DownloadService"/>
+        <service android:name="net.muxi.huashiapp.service.DownloadService"
+            android:exported="false"/>
 
         <!--第三方开放平台-->
 
@@ -276,7 +279,8 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <receiver android:name="net.muxi.huashiapp.provider.ScheduleWidgetProvider">
+        <receiver android:name="net.muxi.huashiapp.provider.ScheduleWidgetProvider"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
                 <action android:name="android.intent.action.TIME_SET"/>
