@@ -2,35 +2,20 @@ package net.muxi.huashiapp;
 
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 
 import com.alibaba.android.arouter.launcher.ARouter;
 import com.facebook.drawee.backends.pipeline.BuildConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.common.ResizeOptions;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.facebook.imagepipeline.decoder.SimpleProgressiveJpegConfig;
-import com.muxistudio.appcommon.data.User;
 import com.muxistudio.appcommon.user.UserAccountManager;
-import com.muxistudio.appcommon.utils.UtilsExtensionKt;
 import com.muxistudio.common.base.Global;
 import com.muxistudio.common.util.PreferenceUtil;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.umeng.commonsdk.UMConfigure;
 
-import net.muxi.huashiapp.utils.MiPushUtil;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static com.muxistudio.appcommon.Constants.UMENG_APP_KEY;
-import static com.muxistudio.common.util.DimensUtil.dp2px;
 
 /**
  * Created by ybao on 16/4/18.
