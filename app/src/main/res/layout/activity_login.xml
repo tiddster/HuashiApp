@@ -23,6 +23,7 @@
 
         <EditText
             android:id="@+id/et_sid"
+            android:longClickable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="number"
@@ -48,6 +49,7 @@
 
         <EditText
             android:id="@+id/et_pwd"
+            android:longClickable="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textPassword"
