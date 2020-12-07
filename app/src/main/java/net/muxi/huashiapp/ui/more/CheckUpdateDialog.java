@@ -1,12 +1,18 @@
 package net.muxi.huashiapp.ui.more;
 
 import android.app.Dialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import com.muxistudio.common.util.Logger;
 
 import net.muxi.huashiapp.R;
 import net.muxi.huashiapp.widget.CenterDialogFragment;
@@ -61,9 +67,11 @@ public class CheckUpdateDialog extends CenterDialogFragment {
 
     private void initData() {
         if (mTitle != null) {
+            mUpdateTitle.setTextColor(Color.parseColor("#000000"));
             mUpdateTitle.setText(mTitle);
         }
         if (mContent != null) {
+            mUpdateContent.setTextColor(Color.parseColor("#000000"));
             mUpdateContent.setText(mContent);
         }
         if (mUpdate != null) {

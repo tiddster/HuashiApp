@@ -48,15 +48,17 @@ public class SplashActivity extends AppCompatActivity {
         draweeView=(SimpleDraweeView) findViewById(R.id.splash_drawee);
         button.setVisibility(View.INVISIBLE);
         context=this;
-        SignCheck signCheck = new SignCheck(this, "B0:82:FE:46:80:04:1F:47:5C:6F:8D:DD:30:3D:6C:6C:06:1A:AC:83");
+        SignCheck signCheck = new SignCheck(this, "75:95:6A:19:CC:49:96:EB:E7:88:BC:FB:ED:23:8C:DB:7F:3C:89:32");
         if(signCheck.check()) {
             if (RootCheck.checkRootWhichSU()) {
-                Toast.makeText(this,"root",Toast.LENGTH_LONG).show();
-                final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-                checkUpdateDialog.setTitle("启动失败");
-                checkUpdateDialog.setContent("本应用禁止在Root设备上使用");
-                checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), checkUpdateDialog::dismiss);
-                checkUpdateDialog.show(getSupportFragmentManager(), "dialog_root");
+                CheckUpdateDialog checkUpdateDialog1 = new CheckUpdateDialog();
+                checkUpdateDialog1.setTitle("启动失败");
+                checkUpdateDialog1.setContent("本应用禁止在Root设备上使用");
+                checkUpdateDialog1.setOnPositiveButton("确认", ()->{
+                    checkUpdateDialog1.dismiss();
+                    System.exit(0);
+                });
+                checkUpdateDialog1.show(getSupportFragmentManager(), "dialog_root");
             }else {
                 getConfig();
                 button.setOnClickListener(v -> {
@@ -66,13 +68,14 @@ public class SplashActivity extends AppCompatActivity {
                 });
             }
         } else {
-
-            Toast.makeText(this,"签名",Toast.LENGTH_LONG).show();
-            final CheckUpdateDialog checkUpdateDialog = new CheckUpdateDialog();
-            checkUpdateDialog.setTitle("应用签名错误");
-            checkUpdateDialog.setContent("请前往华师匣子官网（ccnubox.muxixyz.com）下载正版App");
-            checkUpdateDialog.setOnPositiveButton(App.sContext.getString(R.string.btn_update), checkUpdateDialog::dismiss);
-            checkUpdateDialog.show(getSupportFragmentManager(), "dialog_sign");
+            CheckUpdateDialog checkUpdateDialog2 = new CheckUpdateDialog();
+            checkUpdateDialog2.setTitle("应用签名错误");
+            checkUpdateDialog2.setContent("请前往华师匣子官网（ccnubox.muxixyz.com）下载正版App");
+            checkUpdateDialog2.setOnPositiveButton("确认", () -> {
+                checkUpdateDialog2.dismiss();
+                System.exit(0);
+            });
+            checkUpdateDialog2.show(getSupportFragmentManager(), "dialog_sign");
         }
     }
 
