@@ -64,7 +64,6 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public static int ITEM = 1;
 
 
-
     public interface OnBannerItemClickListener {
         void onBannerItemClick(BannerData bannerData);
     }
@@ -198,8 +197,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                 ViewHolder<BannerData> viewHolder = (context, bannerDatas) -> {
                     SimpleDraweeView simpleDraweeView = new SimpleDraweeView(mContext);
 
-                    ImageRequest request=ImageRequestBuilder.newBuilderWithSource(Uri.parse(bannerDatas.getImg()))
-                           .setResizeOptions(new ResizeOptions(720,300))
+                    ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse(bannerDatas.getImg()))
+                            .setResizeOptions(new ResizeOptions(720, 300))
                             .build();
                     DraweeController controller = Fresco.newDraweeControllerBuilder()
                             .setOldController(simpleDraweeView.getController())
@@ -211,8 +210,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
                     simpleDraweeView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
                     simpleDraweeView.setOnClickListener(v -> {
-                        Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
-                        mContext.startActivity(intent);
+                        if (!bannerDatas.getUrl().isEmpty() && !bannerDatas.getUrl().equals("")) {
+                            Intent intent = WebViewActivity.newIntent(mContext, bannerDatas.getUrl());
+                            mContext.startActivity(intent);
+                        }
 
                     });
                     return simpleDraweeView;
@@ -231,7 +232,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
         } else if (holder instanceof CommonViewHolder) {
             //如果是动态获取的图片 就需要网络加载资源
             int index = position - ITEM;
-            if(index < 0 ) return;
+            if (index < 0) return;
             if (mItemDatas.get(position - ITEM).isDynamic()) {
                 ((CommonViewHolder) holder).mDraweeView.setImageURI(Uri.parse(mItemDatas.get(position - ITEM).getIcon()));
                 FrescoUtil.savePicture(mItemDatas.get(position - ITEM).getIcon(), mContext, mItemDatas.get(position - ITEM).getName());
@@ -309,9 +310,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> i
     public class BannerViewHolder extends RecyclerView.ViewHolder {
         public CardBanner mCardBanner;
         View itemView;
+
         public BannerViewHolder(View itemView) {
             super(itemView);
-            this.itemView=itemView;
+            this.itemView = itemView;
             mCardBanner = itemView.findViewById(R.id.card_banner);
         }
     }
