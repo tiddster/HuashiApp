@@ -9,8 +9,25 @@ import java.util.regex.Pattern;
  */
 //这个是一个很大很大的list
 public class AuditCourse {
-    private List<ResBean> res;
-//    private List<ResBean> res;
+    /**
+     * code : 0
+     * message : OK
+     * data : [{"grade":2019,"name":"数据结构","teacher":"董石,","for_whom":"数字媒体技术","lesson_no":"48900004","kind":"通识必修课,公共必修课及专业课","place_and_time":[{"place":"N311","time":"星期一第1-2节{4-20周}"},{"place":"信技实验室","time":"星期三第5-6节{4-12周}"}]},{"grade":2019,"name":"数据结构","teacher":"董石,","for_whom":"数字媒体技术","lesson_no":"48900004","kind":"通识必修课,公共必修课及专业课","place_and_time":[{"place":"N311","time":"星期二第7-8节{4-20周}"},{"place":"信技实验室","time":"星期四第1-2节{4-12周}"}]},{"grade":2019,"name":"数据结构实验","teacher":"董石,","for_whom":"数字媒体技术","lesson_no":"48900008","kind":"通识必修课,公共必修课及专业课","place_and_time":[{"place":"信技实验室","time":"星期三第5-6节{13-20周}"}]},{"grade":2019,"name":"数据结构实验","teacher":"董石,","for_whom":"数字媒体技术","lesson_no":"48900008","kind":"通识必修课,公共必修课及专业课","place_and_time":[{"place":"信技实验室","time":"星期四第1-2节{13-20周}"}]}]
+     */
+
+    private int code;
+    private String message;
+    /**
+     * grade : 2019
+     * name : 数据结构
+     * teacher : 董石,
+     * for_whom : 数字媒体技术
+     * lesson_no : 48900004
+     * kind : 通识必修课,公共必修课及专业课
+     * place_and_time : [{"place":"N311","time":"星期一第1-2节{4-20周}"},{"place":"信技实验室","time":"星期三第5-6节{4-12周}"}]
+     */
+
+    private List<DataBean> data;
 
     //获取(上课的时间和上课的节数)和(上课的周数)
     public static String[] getCourseTime(String when) {
@@ -25,33 +42,61 @@ public class AuditCourse {
         return pieces;
     }
 
-    public List<ResBean> getRes() {
-        return res;
+    public List<DataBean> getRes() {
+        return data;
     }
 
-    public void setRes(List<ResBean> res) {
-        this.res = res;
+    public void setRes(List<DataBean> res) {
+        this.data = res;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public List<DataBean> getData() {
+        return data;
+    }
+
+    public void setData(List<DataBean> data) {
+        this.data = data;
     }
 
 
-    public static class ResBean {
-        /**
-         * name : 大学物理1
-         * teacher : 詹璇
-         * ww : [{"when":"星期一第3-4节{1-17周}","where":"9302.0"},{"when":"星期四第3-4节{1-17周(单)}","where":"9302.0"}]
-         * forwho : 电子信息类
-         * rank : 2017
-         * kind : 专业课
-         * no : 21110034.0
-         */
 
+    public static class DataBean {
+        private int grade;
         private String name;
         private String teacher;
-        private String forwho;
-        private int rank;
+        private String for_whom;
+        private String lesson_no;
         private String kind;
-        private String no;
-        private List<WwBean> ww;
+        /**
+         * place : N311
+         * time : 星期一第1-2节{4-20周}
+         */
+
+        private List<PlaceAndTimeBean> place_and_time;
+
+        public int getGrade() {
+            return grade;
+        }
+
+        public void setGrade(int grade) {
+            this.grade = grade;
+        }
 
         public String getName() {
             return name;
@@ -69,20 +114,20 @@ public class AuditCourse {
             this.teacher = teacher;
         }
 
-        public String getForwho() {
-            return forwho;
+        public String getFor_whom() {
+            return for_whom;
         }
 
-        public void setForwho(String forwho) {
-            this.forwho = forwho;
+        public void setFor_whom(String for_whom) {
+            this.for_whom = for_whom;
         }
 
-        public int getRank() {
-            return rank;
+        public String getLesson_no() {
+            return lesson_no;
         }
 
-        public void setRank(int rank) {
-            this.rank = rank;
+        public void setLesson_no(String lesson_no) {
+            this.lesson_no = lesson_no;
         }
 
         public String getKind() {
@@ -93,45 +138,32 @@ public class AuditCourse {
             this.kind = kind;
         }
 
-        public String getNo() {
-            return no;
+        public List<PlaceAndTimeBean> getPlace_and_time() {
+            return place_and_time;
         }
 
-        public void setNo(String no) {
-            this.no = no;
+        public void setPlace_and_time(List<PlaceAndTimeBean> place_and_time) {
+            this.place_and_time = place_and_time;
         }
 
-        public List<WwBean> getWw() {
-            return ww;
-        }
+        public static class PlaceAndTimeBean {
+            private String place;
+            private String time;
 
-        public void setWw(List<WwBean> ww) {
-            this.ww = ww;
-        }
-
-        public static class WwBean {
-            /**
-             * when : 星期一第3-4节{1-17周}
-             * where : 9302.0
-             */
-
-            private String when;
-            private String where;
-
-            public String getWhen() {
-                return when;
+            public String getPlace() {
+                return place;
             }
 
-            public void setWhen(String when) {
-                this.when = when;
+            public void setPlace(String place) {
+                this.place = place;
             }
 
-            public String getWhere() {
-                return where;
+            public String getTime() {
+                return time;
             }
 
-            public void setWhere(String where) {
-                this.where = where;
+            public void setTime(String time) {
+                this.time = time;
             }
         }
     }

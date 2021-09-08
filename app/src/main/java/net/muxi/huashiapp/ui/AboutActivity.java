@@ -58,7 +58,7 @@ public class AboutActivity extends ToolbarActivity {
             AppUtil.clipToClipBoard(this, "576225292");
             showSnackbarShort("成功复制到粘贴板");
         }else if (id == R.id.tv_copy2){
-            AppUtil.clipToClipBoard(this, "534239958");
+            AppUtil.clipToClipBoard(this, "1145356279");
             showSnackbarShort("成功复制到粘贴板");
         }
     }

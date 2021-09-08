@@ -112,6 +112,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         initRegisterInterface();
 
         mWebview.loadUrl(url);
+//        mWebview.getWebViewClient().shouldOverrideUrlLoading(mWebview,url);
 
         api = WXAPIFactory.createWXAPI(getApplicationContext(), APP_ID, false);
         api.registerApp(APP_ID);
@@ -133,6 +134,7 @@ public class WebViewActivity extends ToolbarActivity implements IWeiboHandler.Re
         webSettings.setAppCacheEnabled(true);
         webSettings.setSaveFormData(true);
         webSettings.setDefaultTextEncodingName("utf-8");
+        webSettings.setDomStorageEnabled(true);
 
         mWebview.setDrawingCacheEnabled(true);
 

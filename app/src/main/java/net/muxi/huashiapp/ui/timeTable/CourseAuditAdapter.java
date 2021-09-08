@@ -58,16 +58,16 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     @Override
     public void onBindViewHolder(AuditViewHolder holder, int position) {
         //这个course 是有id的
-        AuditCourse.ResBean auditCourse = auditCourses.getRes().get(position);
+        AuditCourse.DataBean auditCourse = auditCourses.getRes().get(position);
         String courseNameTeacher = auditCourse.getName() + "(" + auditCourse.getTeacher() + ")";
         holder.mTvCourseNameTeacher.setText(courseNameTeacher);
-        List<AuditCourse.ResBean.WwBean> wwBeanList = auditCourses.getRes().get(position).getWw();
+        List<AuditCourse.DataBean.PlaceAndTimeBean> PlaceAndTimeBeanList = auditCourses.getRes().get(position).getPlace_and_time();
         String where = "", whenPeriod = "", whenWeek = "";
-        for (AuditCourse.ResBean.WwBean wwBean : wwBeanList) {
-            if (!wwBean.getWhere().equals(where)) {
-                where += getProperSite(wwBean.getWhere()) + "\n";
+        for (AuditCourse.DataBean.PlaceAndTimeBean wwBean : PlaceAndTimeBeanList) {
+            if (!wwBean.getPlace().equals(where)) {
+                where += getProperSite(wwBean.getPlace()) + "\n";
             }
-            String p[] = AuditCourse.getCourseTime(wwBean.getWhen());
+            String p[] = AuditCourse.getCourseTime(wwBean.getTime());
             whenPeriod += p[0] + "\n";
             whenWeek += p[1] + "\n";
         }
@@ -172,12 +172,12 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
 
     //设置不同课程的提示
     //如果有两个时间的话需要上传两次时间和地点
-    private void addCourse(String period, AuditCourse.ResBean auditCourse, AuditViewHolder holder) {
+    private void addCourse(String period, AuditCourse.DataBean auditCourse, AuditViewHolder holder) {
         if (isTwoClassWeek(period)) {
             String peroids[] = period.split("\n");
             //week 如果没有修改的格式是 1-17周"\n"1-17周 这两个是一样的 所以在下面的week参数中选取一样的
             String week = holder.mTvCourseWeek.getText().toString().split("\n")[0];
-            List<AuditCourse.ResBean> list = createRequestCourse(auditCourse, peroids, week);
+            List<AuditCourse.DataBean> list = createRequestCourse(auditCourse, peroids, week);
             CampusFactory.getRetrofitService().addCourse(convertCourseAdded(list.get(0)))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -210,7 +210,7 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
                     });
 
         } else {
-            AuditCourse.ResBean audit = auditCourse;
+            AuditCourse.DataBean audit = auditCourse;
             addCourseNetWork(audit, holder);
         }
     }
@@ -226,29 +226,29 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     }
 
     //生成一个请求中使用的AuditCourse 在网络请求中会进行转化
-    private List<AuditCourse.ResBean> createRequestCourse(AuditCourse.ResBean auditCourse, String[] period, String whenWeek) {
-        List<AuditCourse.ResBean> courseList = new ArrayList<>();
+    private List<AuditCourse.DataBean> createRequestCourse(AuditCourse.DataBean auditCourse, String[] period, String whenWeek) {
+        List<AuditCourse.DataBean> courseList = new ArrayList<>();
         for (String p : period) {
-            AuditCourse.ResBean audit = new AuditCourse.ResBean();
+            AuditCourse.DataBean audit = new AuditCourse.DataBean();
             audit.setName(auditCourse.getName());
-            audit.setForwho(auditCourse.getForwho());
+            audit.setFor_whom(auditCourse.getFor_whom());
             audit.setKind(auditCourse.getKind());
-            audit.setNo(auditCourse.getNo());
-            audit.setRank(auditCourse.getRank());
+            audit.setLesson_no(auditCourse.getLesson_no());
+            audit.setKind(auditCourse.getKind());
             audit.setTeacher(auditCourse.getTeacher());
-            List<AuditCourse.ResBean.WwBean> list = new ArrayList<>();
+            List<AuditCourse.DataBean.PlaceAndTimeBean> list = new ArrayList<>();
             String week = whenWeek;
-            AuditCourse.ResBean.WwBean wwBean = new AuditCourse.ResBean.WwBean();
-            wwBean.setWhen(p + "{" + week + "}");
-            wwBean.setWhere(auditCourse.getWw().get(0).getWhere());
+            AuditCourse.DataBean.PlaceAndTimeBean wwBean = new AuditCourse.DataBean.PlaceAndTimeBean();
+            wwBean.setTime(p + "{" + week + "}");
+            wwBean.setPlace(auditCourse.getPlace_and_time().get(0).getPlace());
             list.add(wwBean);
-            audit.setWw(list);
+            audit.setPlace_and_time(list);
             courseList.add(audit);
         }
         return courseList;
     }
 
-    public void addCourseNetWork(AuditCourse.ResBean auditCourse, AuditViewHolder holder) {
+    public void addCourseNetWork(AuditCourse.DataBean auditCourse, AuditViewHolder holder) {
         CampusFactory.getRetrofitService()
                 .addCourse(convertCourseAdded(auditCourse))
                 .subscribeOn(Schedulers.newThread())
@@ -297,23 +297,23 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
     }
 
     //转成一个请求添加课程的对象
-    private CourseAdded convertCourseAdded(AuditCourse.ResBean auditCourse) {
+    private CourseAdded convertCourseAdded(AuditCourse.DataBean auditCourse) {
         CourseAdded courseAdded = new CourseAdded();
         courseAdded.setCourse(auditCourse.getName());
         courseAdded.setTeacher(auditCourse.getTeacher());
 
         courseAdded.setCourse(auditCourse.getName());
         courseAdded.setTeacher(auditCourse.getTeacher());
-        String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
+        String info[] = AuditCourse.getCourseTime(auditCourse.getPlace_and_time().get(0).getTime());
         courseAdded.setWeeks(Course.convertWeeks(getWeekString(info[1])));
         courseAdded.setDay(getDay(getDayDuring(info[0])[0]));
         courseAdded.setStart(getDayDuring(info[0])[1]+"");
         courseAdded.setDuring(getDayDuring(info[0])[2]+"");
-        courseAdded.setPlace(getCorrectPlace(auditCourse.getWw().get(0).getWhere()));
+        courseAdded.setPlace(getCorrectPlace(auditCourse.getPlace_and_time().get(0).getPlace()));
         return courseAdded;
     }
 
-    private Course convertCourse(AuditCourse.ResBean auditCourse) {
+    private Course convertCourse(AuditCourse.DataBean auditCourse) {
         Course course = new Course();
         /*
     public String remind;
@@ -322,13 +322,13 @@ public class CourseAuditAdapter extends RecyclerView.Adapter<CourseAuditAdapter.
         //课程名称
         course.setCourse(auditCourse.getName());
         course.setTeacher(auditCourse.getTeacher());
-        String info[] = AuditCourse.getCourseTime(auditCourse.getWw().get(0).getWhen());
+        String info[] = AuditCourse.getCourseTime(auditCourse.getPlace_and_time().get(0).getTime());
         course.setWeeks(Course.convertWeeks(getWeekString(info[1])));
         //auditCourses 格式 :星期一7-8节
         course.setDay(getDay(getDayDuring(info[0])[0]));
         course.setStart(getDayDuring(info[0])[1]);
         course.setDuring(getDayDuring(info[0])[2]);
-        course.setPlace(getCorrectPlace(auditCourse.getWw().get(0).getWhere()));
+        course.setPlace(getCorrectPlace(auditCourse.getPlace_and_time().get(0).getTime()));
         course.setRemind("false");
         return course;
     }

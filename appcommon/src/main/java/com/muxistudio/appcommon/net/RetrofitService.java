@@ -149,7 +149,7 @@ public interface RetrofitService {
     Observable<ElectricityResponse> getElectricity(@Query("building") String building, @Query("room") String room);
 
     //蹭课 搜索蹭课结果:
-    @GET("lesson/")
+    @GET("lesson/v2")
     Observable<AuditCourse> getAuditCourse(@QueryMap HashMap<String, String> map);
 
     //查询校园卡余额

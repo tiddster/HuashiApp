@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -65,16 +66,16 @@ CourseAuditResultActivity extends ToolbarActivity {
             map.put("name", courseName);
         }
         if (!TextUtils.isEmpty(courseTeacher)) {
-            map.put("t", courseTeacher);
+            map.put("teacher", courseTeacher);
         }
         if (!TextUtils.isEmpty(courseSubject)) {
-            map.put("s", courseSubject);
+            map.put("grade", courseSubject);
         }
         return map;
     }
 
     private void searchAuditCourse(HashMap<String, String> map) {
-        //api文档中只有name teacher subject三个部分
+        //api文档中只有name teacher grade三个部分
 
          LoadingDialog loadingDialog = showLoading(CommonTextUtils.generateRandomCourseText());
         Subscription subscription = CampusFactory.getRetrofitService().getAuditCourse(map)
@@ -85,6 +86,7 @@ CourseAuditResultActivity extends ToolbarActivity {
                         renderCourse(auditCourse);
                         hideLoading();
                     } else {
+                        Log.d("CourseSearchmsg","response"+auditCourse.getRes().isEmpty());
                         showErrorMessage();
                     }
                 }, throwable -> {
