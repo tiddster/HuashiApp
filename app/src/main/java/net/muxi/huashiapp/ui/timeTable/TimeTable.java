@@ -1,6 +1,8 @@
 package net.muxi.huashiapp.ui.timeTable;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -78,6 +80,25 @@ public class TimeTable extends RelativeLayout {
                     if (refreshFinishEvent.isRefreshResult()) {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_ok);
                         mRefreshView.setRefreshViewBackground(R.color.colorAccent);
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//                        dialog.setTitle("注意：");
+                        dialog.setMessage("后续学校课表数据可能发生变化，请以教务系统为准，仔细核对时间");
+                        dialog.setCancelable(false);
+                        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+
+                        dialog.show();
                     } else {
                         mRefreshView.setRefreshResult(R.string.tip_refresh_fail);
                         mRefreshView.setRefreshViewBackground(R.color.red);

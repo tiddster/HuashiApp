@@ -117,6 +117,13 @@
   <string name="login_prompt">新生用户名为学号，初始密码（如果未修改）为证件号后6位（其中大陆学生证件号为身份证号。\n港澳学生证件号为回乡证号，台湾学生证件号为台胞证号，外国留学生证件号为护照号），忽略括号，字母均为小写。\n如果登陆失败，新生请先尝试用默认密码登陆 one.ccnu.edu.cn。如果不能登陆，说明学校还未激活账号。若有疑问可加匣子交流群 576225292 咨询"</string>
     <string name="cur_week_prompt">默认学校周数</string>
 
+    <!--学分绩提示-->
+  <string name="score_explaination">查询结果仅供参考，请以教务管理系统为准</string>
+  <string name="score_fomula">平均学分绩：各课程加权平均</string>
+
+
+  <string name="dialog_schedule_missiles">注意: 后续学校课表数据可能发生变化，请以教务系统为准，仔细核对时间</string>
+
 </resources>
 
 

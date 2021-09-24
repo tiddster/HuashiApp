@@ -133,4 +133,28 @@
         android:text="查询"
         android:textColor="@color/colorWhite"/>
 
+    <TextView
+        android:id="@+id/text_formula"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/text_explaination"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/score_fomula"
+        android:gravity="center"
+        android:textSize="13sp"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/text_explaination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:gravity="center"
+        android:text="@string/score_explaination"
+        android:layout_marginBottom="16dp"
+        android:textSize="13sp" />
+
 </RelativeLayout>
